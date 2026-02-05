@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المحاضرة: مقدمة إلى Backend الويب، قواعد البيانات، والاستضافة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .section-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .section-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .concept-box {
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .concept-box:hover {
+            transform: translateX(-10px);
+        }
+
+        .database-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .server-animation {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .server-animation::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .flow-step {
+            position: relative;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover {
+            transform: scale(1.02);
+        }
+
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: 50%;
+            width: 2px;
+            height: 20px;
+            background-color: #4f46e5;
+        }
+
+        .flow-step:first-child::before {
+            display: none;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <!-- شريط التنقل -->
+    <nav
+        class="bg-gradient-to-r from-purple-700 to-indigo-800 dark:from-purple-900 dark:to-indigo-950 text-white sticky top-0 z-50 shadow-xl print:hidden transition-colors duration-300">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="hover:text-purple-300 transition-colors mr-3">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <div class="bg-white bg-opacity-20 p-2 rounded-lg ml-3">
+                        <i class="fas fa-server text-2xl"></i>
+                    </div>
+                    <h1 class="text-lg md:text-xl font-bold">المحاضرة 9: Backend وقواعد البيانات</h1>
+                </div>
+                <div class="hidden md:flex space-x-4 space-x-reverse items-center">
+                    <a href="#intro" class="hover:text-purple-300 transition-colors text-sm">المقدمة</a>
+                    <a href="#backend" class="hover:text-purple-300 transition-colors text-sm">Backend</a>
+                    <a href="#frontend-backend" class="hover:text-purple-300 transition-colors text-sm">الفرق</a>
+                    <a href="#databases" class="hover:text-purple-300 transition-colors text-sm">قواعد البيانات</a>
+                    <a href="#server" class="hover:text-purple-300 transition-colors text-sm">السيرفر</a>
+                    <a href="#hosting" class="hover:text-purple-300 transition-colors text-sm">الاستضافة</a>
+                    <a href="#integration" class="hover:text-purple-300 transition-colors text-sm">التكامل</a>
+                    <button onclick="window.print()"
+                        class="bg-white text-purple-900 px-3 py-1 rounded hover:bg-purple-100 transition-colors font-bold text-sm">
+                        <i class="fas fa-file-pdf"></i>
+                    </button>
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-white/10 transition-colors focus:outline-none">
+                        <i class="fas fa-moon text-white text-lg"></i>
+                    </button>
+                </div>
+                <button class="md:hidden text-xl" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- القائمة المتنقلة للهواتف -->
+    <div id="mobileMenu" class="md:hidden hidden bg-white shadow-lg">
+        <div class="flex flex-col space-y-3 p-4">
+            <a href="#intro" class="text-gray-700 hover:text-purple-700">المقدمة</a>
+            <a href="#backend" class="text-gray-700 hover:text-purple-700">Backend</a>
+            <a href="#frontend-backend" class="text-gray-700 hover:text-purple-700">الفرق بين Frontend و Backend</a>
+            <a href="#databases" class="text-gray-700 hover:text-purple-700">قواعد البيانات</a>
+            <a href="#server" class="text-gray-700 hover:text-purple-700">السيرفر</a>
+            <a href="#hosting" class="text-gray-700 hover:text-purple-700">الاستضافة</a>
+            <a href="#integration" class="text-gray-700 hover:text-purple-700">التكامل</a>
+        </div>
+    </div>
+
+    <!-- رأس الصفحة -->
+    <header class="py-16 text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-600 via-blue-500 to-indigo-700 opacity-90"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    🌐 مقدمة إلى Backend الويب، قواعد البيانات، والاستضافة
+                </h1>
+                <p class="text-xl md:text-2xl text-white mb-8 opacity-90">
+                    *كيف يعمل الموقع خلف الكواليس؟*
+                </p>
+                <div
+                    class="bg-white bg-opacity-20 backdrop-blur-sm p-6 rounded-xl border border-white border-opacity-30">
+                    <p class="text-white text-lg">
+                        لم تعد مواقع الويب الحديثة مجرد صفحات لعرض النصوص والصور، بل أصبحت أنظمة متكاملة تتفاعل مع
+                        المستخدم، تحفظ بياناته، وتقدم له محتوى مخصصًا بناءً على سلوكه وطلباته.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- المقدمة العامة -->
+    <section id="intro" class="py-16 dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">1️⃣ مقدمة عامة</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    فهم ما يحدث خلف الكواليس يمنحك رؤية كاملة لعالم تطوير الويب
+                </p>
+            </div>
+
+            <div class="section-card bg-white p-8 shadow-lg">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/3 mb-6 md:mb-0">
+                        <div
+                            class="bg-gradient-to-r from-purple-500 to-pink-500 p-8 rounded-full w-64 h-64 mx-auto flex items-center justify-center">
+                            <i class="fas fa-cogs text-white text-7xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 md:pr-8">
+                        <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                            هذا التحول لم يكن ممكنًا بالاعتماد على واجهة المستخدم فقط، بل تطلّب وجود جزء آخر يعمل في
+                            الخلفية يُعرف باسم <span class="font-bold text-purple-700">Backend</span>.
+                        </p>
+                        <div class="bg-purple-50 p-6 rounded-lg border-r-4 border-purple-500">
+                            <h3 class="text-xl font-bold text-purple-800 mb-3">🎯 هدف المحاضرة</h3>
+                            <p class="text-gray-700">
+                                تهدف هذه المحاضرة إلى إعطاء الطالب <span class="font-bold">فهمًا واضحًا وشاملًا</span>
+                                لما يحدث داخل الموقع بعد تفاعل المستخدم معه، مع التركيز على المفاهيم الأساسية دون الدخول
+                                في تفاصيل برمجية معقدة.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ما هو Backend؟ -->
+    <section id="backend" class="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">2️⃣ ما هو Backend؟</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    العقل المفكر الذي يدير منطق التطبيق خلف الكواليس
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="concept-box bg-white p-6 shadow-lg border-l-4 border-blue-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 text-blue-600 p-3 rounded-lg mr-4">
+                            <i class="fas fa-graduation-cap text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-700">🔹 التعريف الأكاديمي</h3>
+                    </div>
+                    <p class="text-gray-700">
+                        Backend هو الجزء المسؤول عن <span class="font-bold">منطق التطبيق (Application Logic)</span>،
+                        ويعمل على <span class="font-bold">الخادم (Server)</span>، حيث يتولى معالجة البيانات، تنفيذ
+                        القواعد البرمجية، والتواصل مع قواعد البيانات.
+                    </p>
+                </div>
+
+                <div class="concept-box bg-white p-6 shadow-lg border-l-4 border-green-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 text-green-600 p-3 rounded-lg mr-4">
+                            <i class="fas fa-brain text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-green-700">🔹 التعريف المبسّط</h3>
+                    </div>
+                    <p class="text-gray-700">
+                        Backend هو <span class="font-bold text-green-700">العقل</span> الذي يفكر بدل الموقع. هو الجزء
+                        الذي يقرر:
+                    </p>
+                    <ul class="mt-4 space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-question-circle text-green-500 mt-1 ml-2"></i>
+                            <span>هل هذه البيانات صحيحة؟</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-user-shield text-green-500 mt-1 ml-2"></i>
+                            <span>هل هذا المستخدم مسموح له؟</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-mouse-pointer text-green-500 mt-1 ml-2"></i>
+                            <span>ماذا يجب أن يحدث بعد الضغط على زر؟</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- مهام Backend الرئيسية -->
+            <div class="section-card bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8">
+                <h3 class="text-2xl font-bold mb-6 text-center">🔹 مهام Backend الرئيسية</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white bg-opacity-20 p-5 rounded-lg text-center backdrop-blur-sm">
+                        <div class="text-3xl mb-4">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">استقبال البيانات</h4>
+                        <p class="text-sm opacity-90">استقبال البيانات القادمة من المستخدم</p>
+                    </div>
+
+                    <div class="bg-white bg-opacity-20 p-5 rounded-lg text-center backdrop-blur-sm">
+                        <div class="text-3xl mb-4">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">التحقق من الصحة</h4>
+                        <p class="text-sm opacity-90">التحقق من صحة البيانات المدخلة</p>
+                    </div>
+
+                    <div class="bg-white bg-opacity-20 p-5 rounded-lg text-center backdrop-blur-sm">
+                        <div class="text-3xl mb-4">
+                            <i class="fas fa-save"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">حفظ البيانات</h4>
+                        <p class="text-sm opacity-90">حفظ البيانات أو استرجاعها</p>
+                    </div>
+
+                    <div class="bg-white bg-opacity-20 p-5 rounded-lg text-center backdrop-blur-sm">
+                        <div class="text-3xl mb-4">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <h4 class="font-bold mb-2">إدارة الحسابات</h4>
+                        <p class="text-sm opacity-90">إدارة الحسابات والصلاحيات</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفرق بين Frontend و Backend -->
+    <section id="frontend-backend" class="py-16 dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">3️⃣ الفرق بين Frontend و Backend</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    لفهم الفكرة بشكل أوضح، نميّز بين جزئي الموقع
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="section-card bg-gradient-to-br from-blue-50 to-white p-8 border border-blue-200">
+                    <div class="text-center mb-6">
+                        <div class="bg-blue-100 text-blue-600 p-4 rounded-full inline-block">
+                            <i class="fas fa-desktop text-4xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-blue-700 mt-4">Frontend (الواجهة)</h3>
+                        <p class="text-blue-600 font-bold">ما يراه المستخدم</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-lg ml-3">
+                                <i class="fas fa-globe text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">يعمل داخل المتصفح</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-lg ml-3">
+                                <i class="fas fa-code text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">HTML, CSS, JavaScript</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-lg ml-3">
+                                <i class="fas fa-paint-brush text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">التصميم والتفاعل</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card bg-gradient-to-br from-purple-50 to-white p-8 border border-purple-200">
+                    <div class="text-center mb-6">
+                        <div class="bg-purple-100 text-purple-600 p-4 rounded-full inline-block">
+                            <i class="fas fa-server text-4xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-purple-700 mt-4">Backend (الخلفية)</h3>
+                        <p class="text-purple-600 font-bold">ما يحدث خلف الكواليس</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 p-2 rounded-lg ml-3">
+                                <i class="fas fa-cloud text-purple-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">يعمل على السيرفر</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 p-2 rounded-lg ml-3">
+                                <i class="fas fa-terminal text-purple-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">PHP, Node.js, Python</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 p-2 rounded-lg ml-3">
+                                <i class="fas fa-cogs text-purple-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">المعالجة والتخزين</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تشبيه توضيحي -->
+            <div class="section-card bg-gradient-to-r from-yellow-50 to-orange-50 p-8 border border-yellow-200">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/4 mb-6 md:mb-0">
+                        <div class="bg-yellow-100 text-yellow-600 p-6 rounded-full">
+                            <i class="fas fa-store-alt text-5xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-3/4 md:pr-8">
+                        <h3 class="text-2xl font-bold text-yellow-700 mb-4">📌 يمكن تشبيه الموقع بـ:</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-yellow-700 mb-2">Frontend = واجهة المحل</h4>
+                                <p class="text-gray-700">ما يراه الزبون من ديكور وعرض للمنتجات</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-yellow-700 mb-2">Backend = الموظفون والمخزن</h4>
+                                <p class="text-gray-700">النظام الداخلي، المخزن، والحسابات</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قواعد البيانات -->
+    <section id="databases" class="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">4️⃣ قواعد البيانات (Databases)</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    الذاكرة التي تحفظ كل معلومات الموقع
+                </p>
+            </div>
+
+            <div class="section-card bg-white p-8 shadow-lg mb-12">
+                <div class="flex flex-col md:flex-row items-center mb-8">
+                    <div class="md:w-1/3 mb-6 md:mb-0">
+                        <div
+                            class="database-icon bg-gradient-to-r from-green-400 to-blue-500 p-10 rounded-full w-72 h-72 mx-auto flex items-center justify-center">
+                            <i class="fas fa-database text-white text-8xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 md:pr-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">🔹 ما هي قاعدة البيانات؟</h3>
+                        <p class="text-gray-700 text-lg mb-6">
+                            قاعدة البيانات هي نظام منظم لتخزين البيانات بطريقة تسمح بالوصول إليها، تعديلها، وحذفها
+                            بسهولة وأمان.
+                        </p>
+
+                        <div class="bg-red-50 p-5 rounded-lg border-r-4 border-red-500">
+                            <h4 class="text-xl font-bold text-red-700 mb-3">🔹 لماذا نحتاج قواعد البيانات؟</h4>
+                            <p class="text-gray-700 mb-3">بدون قاعدة بيانات:</p>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                <li>لا يمكن حفظ حسابات المستخدمين</li>
+                                <li>لا يمكن تخزين محتوى الموقع</li>
+                                <li>لا يمكن تذكر أي معلومات بعد إغلاق الصفحة</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أمثلة على البيانات -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">🔹 أمثلة على بيانات تُخزن في قاعدة البيانات</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-blue-100 p-3 rounded-lg ml-3">
+                                    <i class="fas fa-users text-blue-600"></i>
+                                </div>
+                                <h4 class="font-bold text-blue-700">بيانات المستخدمين</h4>
+                            </div>
+                            <p class="text-gray-700">الاسم، البريد، كلمة المرور</p>
+                        </div>
+
+                        <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-green-100 p-3 rounded-lg ml-3">
+                                    <i class="fas fa-newspaper text-green-600"></i>
+                                </div>
+                                <h4 class="font-bold text-green-700">المقالات والمنشورات</h4>
+                            </div>
+                            <p class="text-gray-700">المحتوى النصي والمرئي</p>
+                        </div>
+
+                        <div class="bg-purple-50 p-5 rounded-lg border border-purple-200">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-purple-100 p-3 rounded-lg ml-3">
+                                    <i class="fas fa-shopping-cart text-purple-600"></i>
+                                </div>
+                                <h4 class="font-bold text-purple-700">الطلبات والفواتير</h4>
+                            </div>
+                            <p class="text-gray-700">عمليات الشراء والدفع</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أنواع قواعد البيانات -->
+            <div class="section-card bg-gradient-to-r from-gray-800 to-gray-900 text-white p-8">
+                <h3 class="text-2xl font-bold mb-8 text-center">5️⃣ أنواع قواعد البيانات (بشرح متوازن)</h3>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- قواعد البيانات العلائقية -->
+                    <div class="bg-gray-700 bg-opacity-50 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-500 text-white p-3 rounded-lg ml-4">
+                                <i class="fas fa-table text-2xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold">1️⃣ قواعد البيانات العلائقية (SQL)</h4>
+                        </div>
+
+                        <div class="space-y-3 mb-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-300 mt-1 ml-2"></i>
+                                <span>تعتمد على الجداول</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-300 mt-1 ml-2"></i>
+                                <span>منظمة بدقة</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-300 mt-1 ml-2"></i>
+                                <span>تستخدم علاقات بين البيانات</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="font-bold mb-2">أمثلة:</h5>
+                            <div class="flex space-x-3 space-x-reverse">
+                                <span class="bg-blue-600 px-3 py-1 rounded-full text-sm">MySQL</span>
+                                <span class="bg-blue-600 px-3 py-1 rounded-full text-sm">PostgreSQL</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 p-4 rounded-lg">
+                            <h5 class="font-bold text-blue-300 mb-2">🔹 تُستخدم غالبًا في:</h5>
+                            <ul class="list-disc list-inside space-y-1 text-gray-300">
+                                <li>مواقع الشركات</li>
+                                <li>الأنظمة الإدارية</li>
+                                <li>المتاجر الإلكترونية</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- قواعد البيانات غير العلائقية -->
+                    <div class="bg-gray-700 bg-opacity-50 p-6 rounded-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-500 text-white p-3 rounded-lg ml-4">
+                                <i class="fas fa-file-code text-2xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold">2️⃣ قواعد البيانات غير العلائقية (NoSQL)</h4>
+                        </div>
+
+                        <div class="space-y-3 mb-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-300 mt-1 ml-2"></i>
+                                <span>مرنة في تخزين البيانات</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-300 mt-1 ml-2"></i>
+                                <span>تعتمد على مستندات أو JSON</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-300 mt-1 ml-2"></i>
+                                <span>مناسبة للتطبيقات الحديثة</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="font-bold mb-2">أمثلة:</h5>
+                            <div class="flex space-x-3 space-x-reverse">
+                                <span class="bg-green-600 px-3 py-1 rounded-full text-sm">MongoDB</span>
+                                <span class="bg-green-600 px-3 py-1 rounded-full text-sm">Firebase</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 p-4 rounded-lg mt-6">
+                            <div class="flex items-center">
+                                <div class="bg-yellow-500 text-gray-800 p-2 rounded-lg ml-3">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-yellow-300">📌 في هذه المرحلة التعليمية:</h5>
+                                    <p class="text-gray-300 mt-1">
+                                        <span class="font-bold">لا نختار النوع</span><br>
+                                        <span class="font-bold">بل نفهم الاختلاف فقط</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ما هو السيرفر (Server)؟ -->
+    <section id="server" class="py-16 dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">6️⃣ ما هو السيرفر (Server)؟</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    الجهاز الذي يستضيف الموقع ويعالجه
+                </p>
+            </div>
+
+            <div class="section-card bg-white p-8 shadow-lg mb-12">
+                <div class="flex flex-col lg:flex-row items-center">
+                    <div class="lg:w-1/3 mb-8 lg:mb-0">
+                        <div
+                            class="server-animation bg-gradient-to-r from-indigo-500 to-purple-600 p-10 rounded-xl w-full h-64 flex items-center justify-center">
+                            <i class="fas fa-server text-white text-8xl"></i>
+                        </div>
+                    </div>
+                    <div class="lg:w-2/3 lg:pr-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">🔹 التعريف</h3>
+                        <p class="text-gray-700 text-lg mb-6">
+                            السيرفر هو جهاز حاسوب مخصص لتقديم الخدمات عبر الإنترنت، ويتميز بأنه:
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-indigo-50 p-5 rounded-lg">
+                                <div class="flex items-center mb-3">
+                                    <div class="bg-indigo-100 p-3 rounded-lg ml-3">
+                                        <i class="fas fa-clock text-indigo-600"></i>
+                                    </div>
+                                    <h4 class="font-bold text-indigo-700">يعمل باستمرار</h4>
+                                </div>
+                                <p class="text-gray-700">(24/7) متصل بالإنترنت دائمًا</p>
+                            </div>
+
+                            <div class="bg-indigo-50 p-5 rounded-lg">
+                                <div class="flex items-center mb-3">
+                                    <div class="bg-indigo-100 p-3 rounded-lg ml-3">
+                                        <i class="fas fa-wifi text-indigo-600"></i>
+                                    </div>
+                                    <h4 class="font-bold text-indigo-700">متصل بالإنترنت</h4>
+                                </div>
+                                <p class="text-gray-700">دائم الاتصال لاستقبال الطلبات</p>
+                            </div>
+
+                            <div class="bg-indigo-50 p-5 rounded-lg">
+                                <div class="flex items-center mb-3">
+                                    <div class="bg-indigo-100 p-3 rounded-lg ml-3">
+                                        <i class="fas fa-inbox text-indigo-600"></i>
+                                    </div>
+                                    <h4 class="font-bold text-indigo-700">يستقبل الطلبات</h4>
+                                </div>
+                                <p class="text-gray-700">يستقبل الطلبات من المستخدمين</p>
+                            </div>
+
+                            <div class="bg-indigo-50 p-5 rounded-lg">
+                                <div class="flex items-center mb-3">
+                                    <div class="bg-indigo-100 p-3 rounded-lg ml-3">
+                                        <i class="fas fa-cogs text-indigo-600"></i>
+                                    </div>
+                                    <h4 class="font-bold text-indigo-700">يعالج الطلبات</h4>
+                                </div>
+                                <p class="text-gray-700">يعالجها ويعيد الاستجابة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ماذا يحدث عند فتح موقع؟ -->
+            <div class="section-card bg-gradient-to-r from-blue-800 to-indigo-900 text-white p-8">
+                <h3 class="text-2xl font-bold mb-8 text-center">🔹 ماذا يحدث عند فتح موقع؟</h3>
+
+                <div class="space-y-6">
+                    <div class="flow-step bg-white bg-opacity-20 backdrop-blur-sm">
+                        <div class="flex items-center mb-3">
+                            <div
+                                class="bg-white text-blue-700 w-10 h-10 rounded-full flex items-center justify-center font-bold ml-3">
+                                1</div>
+                            <h4 class="text-xl font-bold">المستخدم يكتب عنوان الموقع</h4>
+                        </div>
+                    </div>
+
+                    <div class="flow-step bg-white bg-opacity-20 backdrop-blur-sm">
+                        <div class="flex items-center mb-3">
+                            <div
+                                class="bg-white text-blue-700 w-10 h-10 rounded-full flex items-center justify-center font-bold ml-3">
+                                2</div>
+                            <h4 class="text-xl font-bold">المتصفح يرسل طلبًا</h4>
+                        </div>
+                    </div>
+
+                    <div class="flow-step bg-white bg-opacity-20 backdrop-blur-sm">
+                        <div class="flex items-center mb-3">
+                            <div
+                                class="bg-white text-blue-700 w-10 h-10 rounded-full flex items-center justify-center font-bold ml-3">
+                                3</div>
+                            <h4 class="text-xl font-bold">السيرفر يستقبل الطلب</h4>
+                        </div>
+                    </div>
+
+                    <div class="flow-step bg-white bg-opacity-20 backdrop-blur-sm">
+                        <div class="flex items-center mb-3">
+                            <div
+                                class="bg-white text-blue-700 w-10 h-10 rounded-full flex items-center justify-center font-bold ml-3">
+                                4</div>
+                            <h4 class="text-xl font-bold">Backend ينفّذ التعليمات</h4>
+                        </div>
+                    </div>
+
+                    <div class="flow-step bg-white bg-opacity-20 backdrop-blur-sm">
+                        <div class="flex items-center mb-3">
+                            <div
+                                class="bg-white text-blue-700 w-10 h-10 rounded-full flex items-center justify-center font-bold ml-3">
+                                5</div>
+                            <h4 class="text-xl font-bold">قاعدة البيانات تُستخدم إن لزم</h4>
+                        </div>
+                    </div>
+
+                    <div class="flow-step bg-white bg-opacity-20 backdrop-blur-sm">
+                        <div class="flex items-center mb-3">
+                            <div
+                                class="bg-white text-blue-700 w-10 h-10 rounded-full flex items-center justify-center font-bold ml-3">
+                                6</div>
+                            <h4 class="text-xl font-bold">النتيجة تُعاد للمتصفح</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ما هي الاستضافة (Web Hosting)؟ -->
+    <section id="hosting" class="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">7️⃣ ما هي الاستضافة (Web Hosting)؟</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    المكان الذي يعيش فيه موقعك على الإنترنت
+                </p>
+            </div>
+
+            <div class="section-card bg-white p-8 shadow-lg mb-12">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">🔹 التعريف</h3>
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/3 mb-6 md:mb-0">
+                        <div class="bg-gradient-to-r from-green-400 to-teal-500 p-10 rounded-xl">
+                            <i class="fas fa-cloud-upload-alt text-white text-8xl"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 md:pr-8">
+                        <p class="text-gray-700 text-lg">
+                            الاستضافة هي خدمة تتيح وضع ملفات الموقع وقاعدة بياناته على سيرفر متصل بالإنترنت، بحيث يكون
+                            الموقع متاحًا للجميع.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أنواع الاستضافة -->
+            <div class="section-card bg-gradient-to-r from-teal-600 to-green-600 text-white p-8">
+                <h3 class="text-2xl font-bold mb-8 text-center">🔹 أنواع الاستضافة (بشكل مبسط)</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Shared Hosting -->
+                    <div class="bg-white bg-opacity-20 p-6 rounded-lg backdrop-blur-sm">
+                        <div class="text-center mb-4">
+                            <div class="bg-white text-teal-600 p-4 rounded-full inline-block">
+                                <i class="fas fa-users text-3xl"></i>
+                            </div>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4 text-center">🔸 Shared Hosting</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 ml-2"></i>
+                                <span>عدة مواقع على نفس السيرفر</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 ml-2"></i>
+                                <span>منخفضة التكلفة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 ml-2"></i>
+                                <span>مناسبة للمواقع الصغيرة</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- VPS -->
+                    <div class="bg-white bg-opacity-20 p-6 rounded-lg backdrop-blur-sm">
+                        <div class="text-center mb-4">
+                            <div class="bg-white text-teal-600 p-4 rounded-full inline-block">
+                                <i class="fas fa-hdd text-3xl"></i>
+                            </div>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4 text-center">🔸 VPS</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 ml-2"></i>
+                                <span>جزء مخصص من السيرفر</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 ml-2"></i>
+                                <span>أداء أفضل</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 ml-2"></i>
+                                <span>تحكم أكبر</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Cloud Hosting -->
+                    <div class="bg-white bg-opacity-20 p-6 rounded-lg backdrop-blur-sm">
+                        <div class="text-center mb-4">
+                            <div class="bg-white text-teal-600 p-4 rounded-full inline-block">
+                                <i class="fas fa-cloud text-3xl"></i>
+                            </div>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4 text-center">🔸 Cloud Hosting</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 ml-2"></i>
+                                <span>تعتمد على عدة سيرفرات</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 ml-2"></i>
+                                <span>عالية الاعتمادية</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle mt-1 ml-2"></i>
+                                <span>مناسبة للمشاريع الكبيرة</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- كيف تتكامل مكونات الموقع معًا؟ -->
+    <section id="integration" class="py-16 dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">8️⃣ كيف تتكامل مكونات الموقع معًا؟</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    دورة عمل الموقع من البداية إلى النهاية
+                </p>
+            </div>
+
+            <div class="section-card bg-gradient-to-r from-purple-700 to-pink-600 text-white p-8">
+                <p class="text-xl text-center mb-8">
+                    يمكن تلخيص دورة عمل الموقع كالتالي:
+                </p>
+
+                <div class="relative">
+                    <!-- خط التوصيل -->
+                    <div
+                        class="hidden md:block absolute right-1/2 top-0 bottom-0 w-1 bg-white bg-opacity-30 transform translate-x-1/2">
+                    </div>
+
+                    <!-- الخطوات -->
+                    <div class="space-y-12">
+                        <!-- الخطوة 1 -->
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:text-left mb-4 md:mb-0">
+                                <div class="bg-white bg-opacity-20 p-5 rounded-lg inline-block">
+                                    <h4 class="text-xl font-bold">1. المستخدم يتفاعل مع الواجهة</h4>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:text-right">
+                                <div
+                                    class="bg-white text-purple-700 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mx-auto md:mx-0">
+                                    1
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الخطوة 2 -->
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:text-right order-2 md:order-1">
+                                <div
+                                    class="bg-white text-purple-700 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mx-auto md:mx-0">
+                                    2
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:text-left order-1 md:order-2 mb-4 md:mb-0">
+                                <div class="bg-white bg-opacity-20 p-5 rounded-lg inline-block">
+                                    <h4 class="text-xl font-bold">2. البيانات تُرسل من المتصفح</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الخطوة 3 -->
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:text-left mb-4 md:mb-0">
+                                <div class="bg-white bg-opacity-20 p-5 rounded-lg inline-block">
+                                    <h4 class="text-xl font-bold">3. Backend يستقبل الطلب</h4>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:text-right">
+                                <div
+                                    class="bg-white text-purple-700 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mx-auto md:mx-0">
+                                    3
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الخطوة 4 -->
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:text-right order-2 md:order-1">
+                                <div
+                                    class="bg-white text-purple-700 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mx-auto md:mx-0">
+                                    4
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:text-left order-1 md:order-2 mb-4 md:mb-0">
+                                <div class="bg-white bg-opacity-20 p-5 rounded-lg inline-block">
+                                    <h4 class="text-xl font-bold">4. يتم التحقق والمعالجة</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الخطوة 5 -->
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:text-left mb-4 md:mb-0">
+                                <div class="bg-white bg-opacity-20 p-5 rounded-lg inline-block">
+                                    <h4 class="text-xl font-bold">5. قاعدة البيانات تُستخدم</h4>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:text-right">
+                                <div
+                                    class="bg-white text-purple-700 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mx-auto md:mx-0">
+                                    5
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الخطوة 6 -->
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:text-right order-2 md:order-1">
+                                <div
+                                    class="bg-white text-purple-700 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mx-auto md:mx-0">
+                                    6
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:text-left order-1 md:order-2 mb-4 md:mb-0">
+                                <div class="bg-white bg-opacity-20 p-5 rounded-lg inline-block">
+                                    <h4 class="text-xl font-bold">6. السيرفر يعيد النتيجة</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الخطوة 7 -->
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:text-left mb-4 md:mb-0">
+                                <div class="bg-white bg-opacity-20 p-5 rounded-lg inline-block">
+                                    <h4 class="text-xl font-bold">7. الواجهة تعرض الرد</h4>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:text-right">
+                                <div
+                                    class="bg-white text-purple-700 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl mx-auto md:mx-0">
+                                    7
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <div class="bg-white bg-opacity-20 p-4 rounded-lg inline-block">
+                        <p class="text-xl font-bold">🔁 هذه الدورة تتكرر في كل عملية داخل الموقع.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- لماذا يجب على مصمم الويب فهم Backend؟ -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">9️⃣ لماذا يجب على مصمم الويب فهم Backend؟
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    حتى لو كان المصمم لا يكتب كود Backend
+                </p>
+            </div>
+
+            <div class="section-card bg-white p-8 shadow-lg">
+                <div class="highlight-box mb-8">
+                    <h3 class="text-2xl font-bold text-center mb-6">فهم Backend يحوّل المصمم من "منفذ تصميم" إلى "مصمم
+                        واعٍ"</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="concept-box bg-blue-50 p-5 border-l-4 border-blue-500">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-blue-100 p-3 rounded-lg ml-3">
+                                <i class="fas fa-lightbulb text-blue-600"></i>
+                            </div>
+                            <h4 class="font-bold text-blue-700">تصميم منطقي</h4>
+                        </div>
+                        <p class="text-gray-700">يساعده على تصميم واجهات منطقية</p>
+                    </div>
+
+                    <div class="concept-box bg-green-50 p-5 border-l-4 border-green-500">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-green-100 p-3 rounded-lg ml-3">
+                                <i class="fas fa-chart-line text-green-600"></i>
+                            </div>
+                            <h4 class="font-bold text-green-700">فهم الإمكانيات</h4>
+                        </div>
+                        <p class="text-gray-700">يجعله يفهم حدود وإمكانيات الموقع</p>
+                    </div>
+
+                    <div class="concept-box bg-purple-50 p-5 border-l-4 border-purple-500">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-purple-100 p-3 rounded-lg ml-3">
+                                <i class="fas fa-handshake text-purple-600"></i>
+                            </div>
+                            <h4 class="font-bold text-purple-700">تعاون أفضل</h4>
+                        </div>
+                        <p class="text-gray-700">يسهل تعاونه مع المبرمجين</p>
+                    </div>
+
+                    <div class="concept-box bg-yellow-50 p-5 border-l-4 border-yellow-500">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-yellow-100 p-3 rounded-lg ml-3">
+                                <i class="fas fa-user-tie text-yellow-600"></i>
+                            </div>
+                            <h4 class="font-bold text-yellow-700">تطوير مهني</h4>
+                        </div>
+                        <p class="text-gray-700">يرفع مستواه المهني</p>
+                    </div>
+
+                    <div class="concept-box bg-red-50 p-5 border-l-4 border-red-500">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-red-100 p-3 rounded-lg ml-3">
+                                <i class="fas fa-rocket text-red-600"></i>
+                            </div>
+                            <h4 class="font-bold text-red-700">تحوّل نوعي</h4>
+                        </div>
+                        <p class="text-gray-700">يحوله من "منفذ تصميم" إلى "مصمم واعٍ"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الخلاصة العامة -->
+    <section class="py-16 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">🔟 الخلاصة العامة</h2>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
+                        <div class="text-4xl mb-4">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Backend</h3>
+                        <p>هو المحرك الأساسي للموقع</p>
+                    </div>
+
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
+                        <div class="text-4xl mb-4">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">قاعدة البيانات</h3>
+                        <p>هي ذاكرته</p>
+                    </div>
+
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
+                        <div class="text-4xl mb-4">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">السيرفر</h3>
+                        <p>هو بيئة التشغيل</p>
+                    </div>
+
+                    <div class="bg-white bg-opacity-10 p-6 rounded-lg backdrop-blur-sm">
+                        <div class="text-4xl mb-4">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">الاستضافة</h3>
+                        <p>هي المكان الذي يعيش فيه الموقع</p>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white bg-opacity-10 p-8 rounded-lg backdrop-blur-sm border border-white border-opacity-20">
+                    <p class="text-xl leading-relaxed">
+                        فهم هذه العناصر يمنح الطالب <span class="font-bold">صورة كاملة</span> عن كيفية عمل مواقع الويب
+                        الحديثة، ويمهّد له الطريق للانتقال لاحقًا إلى البرمجة الخلفية بشكل عملي.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <!-- تذييل الصفحة -->
+    <footer class="bg-gray-900 text-white py-8 print:text-black print:bg-white print:border-t mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <h4 class="text-xl font-bold mb-2">المهندس رمزي البازل</h4>
+            <p class="mb-4">🎓 المحاضرة التاسعة: Backend وقواعد البيانات</p>
+            <div class="flex justify-center gap-6 mb-4 print:hidden">
+                <a href="mailto:ramzyalbazel700@gmail.com" class="hover:text-purple-400"><i
+                        class="fas fa-envelope"></i></a>
+                <a href="https://t.me/web_note_bot" class="hover:text-purple-400"><i class="fab fa-telegram"></i></a>
+            </div>
+            <p class="text-gray-400 text-sm">© 2026 جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- إضافة التفاعلية -->
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW failed:', err));
+            });
+        }
+        // تفعيل/إلغاء القائمة المتنقلة
+        document.getElementById('menuToggle').addEventListener('click', function () {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // إغلاق القائمة عند النقر على رابط
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', function () {
+                document.getElementById('mobileMenu').classList.add('hidden');
+            });
+        });
+
+        // إضافة تأثيرات للبطاقات عند التمرير
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // تطبيق التأثير على البطاقات
+        document.querySelectorAll('.section-card, .concept-box, .flow-step').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // إضافة تأثيرات التفاعل مع البطاقات
+        document.querySelectorAll('.concept-box').forEach(box => {
+            box.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateX(-10px)';
+            });
+
+            box.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Config Tailwind
+        tailwind.config = {
+            darkMode: 'class',
+        }
+
+        // Dark Mode Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const html = document.documentElement;
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            html.classList.remove('dark');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.theme = 'light';
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المحاضرة الخامسة: أساسيات HTML - الهيكلة الأولى لبناء موقع الويب</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .section-card {
+            transition: transform 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tag-card {
+            transition: all 0.3s ease;
+        }
+
+        .tag-card:hover {
+            transform: scale(1.03);
+        }
+
+        .code-block {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .example-box {
+            transition: all 0.3s ease;
+        }
+
+        .example-box:hover {
+            transform: scale(1.02);
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            transform: translateX(-5px);
+        }
+
+        .html-tag {
+            font-family: monospace;
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #dc2626;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <!-- شريط التنقل -->
+    <nav
+        class="bg-green-700 dark:bg-green-900 text-white sticky top-0 z-50 shadow-lg print:hidden transition-colors duration-300">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="hover:text-green-300 transition-colors">
+                        <i class="fas fa-arrow-right"></i> الرئيسية
+                    </a>
+                    <h1 class="text-xl font-bold">المحاضرة 5: أساسيات HTML</h1>
+                </div>
+                <div class="hidden md:flex space-x-6 space-x-reverse items-center">
+                    <a href="#introduction" class="hover:text-green-300 transition-colors nav-item">مقدمة</a>
+                    <a href="#what-is-html" class="hover:text-green-300 transition-colors nav-item">ما هي HTML</a>
+                    <a href="#structure" class="hover:text-green-300 transition-colors nav-item">هيكل الصفحة</a>
+                    <a href="#tags" class="hover:text-green-300 transition-colors nav-item">الوسوم</a>
+                    <a href="#example" class="hover:text-green-300 transition-colors nav-item">مثال</a>
+                    <a href="#tools" class="hover:text-green-300 transition-colors nav-item">الأدوات</a>
+                    <a href="#requirements" class="hover:text-green-300 transition-colors nav-item">المتطلبات</a>
+                    <button onclick="window.print()"
+                        class="bg-white text-green-900 px-3 py-1 rounded hover:bg-green-100 transition-colors font-bold text-sm">
+                        <i class="fas fa-file-pdf me-1"></i> PDF
+                    </button>
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-white/10 transition-colors focus:outline-none">
+                        <i class="fas fa-moon text-white text-lg"></i>
+                    </button>
+                </div>
+                <button class="md:hidden text-xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- رأس الصفحة -->
+    <header
+        class="bg-gradient-to-r from-green-600 to-emerald-700 dark:from-green-900 dark:to-emerald-900 text-white py-16 print:py-10">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center mb-4">
+                <div class="bg-white bg-opacity-20 p-4 rounded-full">
+                    <i class="fab fa-html5 text-4xl"></i>
+                </div>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-6">🎓 المحاضرة الخامسة: أساسيات HTML - الهيكلة الأولى لبناء
+                موقع الويب</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">HTML هي اللغة الأساسية لبناء صفحات الويب - هياكل ووسوم
+            </p>
+            <div class="max-w-4xl mx-auto bg-green-800 bg-opacity-40 p-6 rounded-lg">
+                <p class="text-lg">
+                    HTML هي اللغة الأساسية لبناء صفحات الويب. هي ليست لغة برمجة، بل لغة هيكلة (Markup Language) تستخدم
+                    لتحديد العناصر التي تظهر في الصفحة.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- مقدمة -->
+    <section id="introduction" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-green-800">⭐ المقدمة</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">HTML هي اللغة الأساسية لبناء صفحات الويب -
+                هياكل ووسوم</p>
+
+            <div class="section-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                <p class="text-gray-700 text-lg mb-6">
+                    HTML هي لغة هيكلة (Markup Language) تستخدم لتحديد العناصر التي تظهر في الصفحة:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-green-50 p-4 rounded-lg text-center">
+                        <i class="fas fa-heading text-green-600 text-2xl mb-2"></i>
+                        <p class="text-green-700 font-bold">نصوص</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg text-center">
+                        <i class="fas fa-image text-green-600 text-2xl mb-2"></i>
+                        <p class="text-green-700 font-bold">صور</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg text-center">
+                        <i class="fas fa-link text-green-600 text-2xl mb-2"></i>
+                        <p class="text-green-700 font-bold">روابط</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg text-center">
+                        <i class="fas fa-table text-green-600 text-2xl mb-2"></i>
+                        <p class="text-green-700 font-bold">جداول</p>
+                    </div>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-6">
+                    <p class="text-blue-700 font-bold text-center">بدون HTML لا يمكن لأي موقع أن يعمل أو يظهر.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ما هي HTML؟ ولماذا نحتاجها؟ -->
+    <section id="what-is-html" class="py-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-green-800">📌 أولًا: ما هي HTML؟ ولماذا نحتاجها؟</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">HTML = HyperText Markup Language</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">ما هي HTML؟</h3>
+                    <p class="text-gray-700 mb-4">
+                        HTML هي اختصار لـ <span class="font-bold text-green-700">HyperText Markup Language</span>.
+                        وهي عبارة عن وسوم (Tags) تحيط بالعناصر لتعرّف المتصفح ماذا يمثل كل جزء.
+                    </p>
+                    <div class="bg-gray-800 text-green-300 p-4 rounded code-block mb-4">
+                        <pre><code class="language-html">&lt;h1&gt;مرحبا بكم في موقعي&lt;/h1&gt;
+&lt;p&gt;هذه فقرة نصية.&lt;/p&gt;</code></pre>
+                    </div>
+                    <p class="text-gray-700">المتصفح يقرأ الوسوم ويعرضها بشكل مرئي.</p>
+                </div>
+
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-blue-200">
+                    <h3 class="text-xl font-bold mb-4 text-blue-700">كيف تعمل HTML؟</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3 mt-1">
+                                <i class="fas fa-code text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">كتابة الوسوم</h4>
+                                <p class="text-gray-700 text-sm">المطور يكتب الوسوم باستخدام محرر نصوص</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3 mt-1">
+                                <i class="fas fa-globe text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">قراءة المتصفح</h4>
+                                <p class="text-gray-700 text-sm">المتصفح يقرأ الوسوم ويفهم بنية الصفحة</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3 mt-1">
+                                <i class="fas fa-eye text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">عرض الصفحة</h4>
+                                <p class="text-gray-700 text-sm">المتصفح يعرض العناصر بشكل مرئي للمستخدم</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- مكونات صفحة HTML الأساسية -->
+    <section id="structure" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-green-800">📌 ثانيًا: مكونات صفحة HTML الأساسية
+                (Structure)</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">كل صفحة HTML لها هيكل أساسي ثابت</p>
+
+            <div class="section-card bg-white p-6 rounded-lg shadow-md border border-green-200 mb-8">
+                <div class="bg-gray-800 text-green-300 p-4 rounded code-block">
+                    <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;عنوان الصفحة&lt;/title&gt;
+    &lt;meta charset="UTF-8"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    محتوى الصفحة يظهر هنا
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="section-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                <h3 class="text-xl font-bold mb-6 text-green-700 text-center">🔍 شرح المكونات:</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right border-collapse border border-gray-300">
+                        <thead class="bg-green-100">
+                            <tr>
+                                <th class="p-3 font-bold border border-gray-300">الوسم</th>
+                                <th class="p-3 font-bold border border-gray-300">وظيفته</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="p-3 border border-gray-300"><span class="html-tag">&lt;!DOCTYPE
+                                        html&gt;</span></td>
+                                <td class="p-3 border border-gray-300">يخبر المتصفح أن الصفحة HTML5</td>
+                            </tr>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <td class="p-3 border border-gray-300"><span class="html-tag">&lt;html&gt;</span></td>
+                                <td class="p-3 border border-gray-300">العنصر الجذري لكل الصفحة</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="p-3 border border-gray-300"><span class="html-tag">&lt;head&gt;</span></td>
+                                <td class="p-3 border border-gray-300">يحتوي المعلومات غير المرئية للموقع</td>
+                            </tr>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <td class="p-3 border border-gray-300"><span class="html-tag">&lt;meta&gt;</span></td>
+                                <td class="p-3 border border-gray-300">معلومات مهمة للغات والترميز</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="p-3 border border-gray-300"><span class="html-tag">&lt;title&gt;</span></td>
+                                <td class="p-3 border border-gray-300">يظهر في شريط المتصفح</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="p-3 border border-gray-300"><span class="html-tag">&lt;body&gt;</span></td>
+                                <td class="p-3 border border-gray-300">يحتوي كل ما يظهر للمستخدم</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أهم الوسوم الأساسية في HTML -->
+    <section id="tags" class="py-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-green-800">📌 ثالثًا: أهم الوسوم الأساسية في HTML</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">تعرف على الوسوم الأساسية المستخدمة في بناء
+                صفحات الويب</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- العناوين -->
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">1) العناوين (Headings)</h3>
+                    <div class="space-y-2 mb-4">
+                        <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                            <pre><code class="language-html">&lt;h1&gt;عنوان رئيسي&lt;/h1&gt;
+&lt;h2&gt;عنوان فرعي&lt;/h2&gt;
+&lt;h3&gt;عنوان صغير&lt;/h3&gt;</code></pre>
+                        </div>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded">
+                        <p class="text-green-700 text-sm font-bold">h1 الأهم ← h6 الأصغر</p>
+                    </div>
+                </div>
+
+                <!-- الفقرات -->
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">2) الفقرات (Paragraphs)</h3>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block mb-4">
+                        <pre><code class="language-html">&lt;p&gt;هذه فقرة نصية.&lt;/p&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- الروابط -->
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">3) الروابط (Links)</h3>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block mb-4">
+                        <pre><code class="language-html">&lt;a href="https://example.com"&gt;اضغط هنا&lt;/a&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- الصور -->
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">4) الصور (Images)</h3>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block mb-4">
+                        <pre><code class="language-html">&lt;img src="image.jpg" alt="وصف للصورة"&gt;</code></pre>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded">
+                        <p class="text-blue-700 text-sm"><span class="font-bold">src</span> مكان الصورة</p>
+                        <p class="text-blue-700 text-sm"><span class="font-bold">alt</span> مهم لـ SEO ولذوي الاحتياجات
+                        </p>
+                    </div>
+                </div>
+
+                <!-- القوائم -->
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">5) القوائم</h3>
+                    <div class="grid grid-cols-1 gap-3">
+                        <div>
+                            <p class="text-gray-700 mb-1 text-sm font-bold">قائمة غير مرتبة:</p>
+                            <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                                <pre><code class="language-html">&lt;ul&gt;
+  &lt;li&gt;عنصر 1&lt;/li&gt;
+  &lt;li&gt;عنصر 2&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-gray-700 mb-1 text-sm font-bold">قائمة مرتبة:</p>
+                            <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                                <pre><code class="language-html">&lt;ol&gt;
+  &lt;li&gt;خطوة 1&lt;/li&gt;
+  &lt;li&gt;خطوة 2&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الجداول -->
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">6) الجداول (Tables)</h3>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                        <pre><code class="language-html">&lt;table border="1"&gt;
+  &lt;tr&gt;
+    &lt;th&gt;الاسم&lt;/th&gt;
+    &lt;td&gt;رمزي&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الأقسام (Div & Semantic Tags) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">📌 div</h3>
+                    <p class="text-gray-700 mb-4">استخدامه عام، لتجميع عناصر داخل حاوية:</p>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block mb-4">
+                        <pre><code class="language-html">&lt;div&gt;
+  &lt;h2&gt;عنوان القسم&lt;/h2&gt;
+  &lt;p&gt;محتوى القسم&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-blue-200">
+                    <h3 class="text-xl font-bold mb-4 text-blue-700">📌 عناصر HTML الدلالية الحديثة (Semantic HTML)</h3>
+                    <p class="text-gray-700 mb-4">تشرح معنى كل جزء من الصفحة:</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right border-collapse border border-gray-300 text-sm">
+                            <thead class="bg-blue-100">
+                                <tr>
+                                    <th class="p-2 font-bold border border-gray-300">الوسم</th>
+                                    <th class="p-2 font-bold border border-gray-300">معناه</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-2 border border-gray-300"><span class="html-tag">&lt;header&gt;</span>
+                                    </td>
+                                    <td class="p-2 border border-gray-300">رأس الصفحة</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 bg-gray-50">
+                                    <td class="p-2 border border-gray-300"><span class="html-tag">&lt;nav&gt;</span>
+                                    </td>
+                                    <td class="p-2 border border-gray-300">قائمة التنقل</td>
+                                </tr>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-2 border border-gray-300"><span class="html-tag">&lt;main&gt;</span>
+                                    </td>
+                                    <td class="p-2 border border-gray-300">المحتوى الرئيسي</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 bg-gray-50">
+                                    <td class="p-2 border border-gray-300"><span class="html-tag">&lt;section&gt;</span>
+                                    </td>
+                                    <td class="p-2 border border-gray-300">قسم من الصفحة</td>
+                                </tr>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-2 border border-gray-300"><span class="html-tag">&lt;article&gt;</span>
+                                    </td>
+                                    <td class="p-2 border border-gray-300">مقالة</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="p-2 border border-gray-300"><span class="html-tag">&lt;footer&gt;</span>
+                                    </td>
+                                    <td class="p-2 border border-gray-300">تذييل</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- مثال عملي – بناء أول صفحة HTML -->
+    <section id="example" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-green-800">📌 رابعًا: مثال عملي – بناء أول صفحة HTML
+            </h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">هذا مثال جاهز يمكن للطالب تشغيله مباشرة</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="example-box bg-gray-800 text-green-300 p-6 rounded-lg code-block">
+                    <h3 class="text-xl font-bold mb-4 text-white text-center">كود HTML</h3>
+                    <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;موقعي الأول&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;مرحبًا بكم في موقعي الأول&lt;/h1&gt;
+    &lt;/header&gt;
+    
+    &lt;section&gt;
+        &lt;h2&gt;نبذة عني&lt;/h2&gt;
+        &lt;p&gt;اسمي رمزي، وهذا أول موقع أبنيه باستخدام HTML.&lt;/p&gt;
+    &lt;/section&gt;
+    
+    &lt;section&gt;
+        &lt;h2&gt;روابط مهمة&lt;/h2&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href="https://google.com"&gt;جوجل&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://youtube.com"&gt;يوتيوب&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/section&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;© 2025 جميع الحقوق محفوظة&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+
+                <div class="example-box bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700 text-center">نتيجة الكود</h3>
+                    <div class="border border-gray-300 rounded p-4">
+                        <div class="mb-6 border-b pb-4">
+                            <h1 class="text-2xl font-bold text-center mb-2">مرحبًا بكم في موقعي الأول</h1>
+                        </div>
+
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold mb-2">نبذة عني</h2>
+                            <p class="text-gray-700">اسمي رمزي، وهذا أول موقع أبنيه باستخدام HTML.</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold mb-2">روابط مهمة</h2>
+                            <ul class="list-disc list-inside text-blue-600 space-y-1">
+                                <li><a href="#" class="hover:text-blue-800">جوجل</a></li>
+                                <li><a href="#" class="hover:text-blue-800">يوتيوب</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-8 pt-4 border-t text-center text-gray-600">
+                            <p>© 2025 جميع الحقوق محفوظة</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-green-50 p-3 rounded text-center">
+                        <p class="text-green-700 font-bold">✅ يمكنك نسخ الكود وتجربته مباشرة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- كيف تعمل HTML مع أدوات التصميم؟ -->
+    <section id="tools" class="py-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-green-800">📌 خامسًا: كيف تعمل HTML مع أدوات التصميم؟
+            </h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">HTML هي مرحلة التنفيذ، لكن قبلها توجد أدوات
+                تستخدم في التخطيط</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-green-200 text-center">
+                    <div
+                        class="bg-purple-100 text-purple-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                        <i class="fab fa-figma text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-purple-700">Figma / Adobe XD</h3>
+                    <p class="text-gray-700">تُستخدم لتصميم شكل الصفحة.</p>
+                </div>
+
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-blue-200 text-center">
+                    <div
+                        class="bg-blue-100 text-blue-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-paint-brush text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-blue-700">Dreamweaver</h3>
+                    <p class="text-gray-700">يُستخدم لكتابة الكود وتنفيذ التصميم بصريًا.</p>
+                </div>
+
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-green-200 text-center">
+                    <div
+                        class="bg-green-100 text-green-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-code text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-green-700">VS Code</h3>
+                    <p class="text-gray-700">يُستخدم للبرمجة الاحترافية.</p>
+                </div>
+
+                <div class="tag-card bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center">
+                    <div
+                        class="bg-gray-100 text-gray-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                        <i class="fab fa-github text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-700">GitHub</h3>
+                    <p class="text-gray-700">يُستخدم لإدارة المشروع.</p>
+                </div>
+            </div>
+
+            <div class="section-card bg-white p-6 rounded-lg shadow-md border border-green-200 mt-8 text-center">
+                <p class="text-green-700 font-bold text-xl">كل هذه الأدوات تنتهي في النهاية بإنشاء ملفات HTML.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- متطلبات اساسيه بكل صفحه في المشروع العملي -->
+    <section id="requirements" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-green-800">متطلبات اساسيه بكل صفحه في المشروع العملي
+            </h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">ابنِ صفحة تحتوي على العناصر الأساسية</p>
+
+            <div
+                class="max-w-4xl mx-auto bg-gradient-to-r from-green-50 to-blue-50 p-8 rounded-lg border border-green-200">
+                <h3 class="text-2xl font-bold mb-6 text-center text-green-800">🔹 المشروع العملي</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-green-200">
+                        <h4 class="text-xl font-bold mb-4 text-green-700 text-center">المطلوب:</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <div class="bg-green-100 text-green-600 p-2 rounded-full mr-3">
+                                    <i class="fas fa-header"></i>
+                                </div>
+                                <div>
+                                    <p class="text-green-700 font-bold">رأس Header</p>
+                                    <p class="text-gray-600 text-sm">عنوان الصفحة الرئيسي</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-green-100 text-green-600 p-2 rounded-full mr-3">
+                                    <i class="fas fa-bars"></i>
+                                </div>
+                                <div>
+                                    <p class="text-green-700 font-bold">قائمة تنقل Nav</p>
+                                    <p class="text-gray-600 text-sm">روابط للتنقل بين أقسام الموقع</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-green-100 text-green-600 p-2 rounded-full mr-3">
+                                    <i class="fas fa-th-large"></i>
+                                </div>
+                                <div>
+                                    <p class="text-green-700 font-bold">قسمين Section</p>
+                                    <p class="text-gray-600 text-sm">محتوى منفصل في الصفحة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-green-100 text-green-600 p-2 rounded-full mr-3">
+                                    <i class="fas fa-window-minimize"></i>
+                                </div>
+                                <div>
+                                    <p class="text-green-700 font-bold">تذييل Footer</p>
+                                    <p class="text-gray-600 text-sm">معلومات الاتصال وحقوق النشر</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-blue-200">
+                        <h4 class="text-xl font-bold mb-4 text-blue-700 text-center">نموذج الهيكل:</h4>
+                        <div class="bg-gray-800 text-green-300 p-4 rounded code-block">
+                            <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;مشروعي العملي&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;عنوان الموقع&lt;/h1&gt;
+    &lt;/header&gt;
+    
+    &lt;nav&gt;
+        &lt;!-- روابط التنقل --&gt;
+    &lt;/nav&gt;
+    
+    &lt;main&gt;
+        &lt;section&gt;
+            &lt;!-- قسم 1 --&gt;
+        &lt;/section&gt;
+        
+        &lt;section&gt;
+            &lt;!-- قسم 2 --&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+    
+    &lt;footer&gt;
+        &lt;!-- تذييل الصفحة --&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-green-100 p-6 rounded-lg border border-green-300 text-center">
+                    <h4 class="text-xl font-bold mb-4 text-green-700">💪 هيا لنبدأ التطبيق!</h4>
+                    <p class="text-green-700">استخدم كل ما تعلمته في هذه المحاضرة لبناء صفحة HTML تحتوي على العناصر
+                        الأساسية</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- خاتمة -->
+    <section class="py-16 bg-gradient-to-r from-green-600 to-emerald-700 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-3xl mx-auto bg-green-800 bg-opacity-40 p-8 rounded-lg">
+                <p class="text-xl mb-6">
+                    في هذه المحاضرة تعلمنا أساسيات HTML - اللغة الأساسية لبناء صفحات الويب.
+                </p>
+                <p class="text-xl">
+                    من الهيكل الأساسي للصفحة إلى الوسوم المختلفة والعناصر الدلالية، أصبحت الآن تمتلك المعرفة الأساسية
+                    لبناء صفحات ويب بسيطة وفعالة.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer class="bg-gray-900 text-white py-8 print:text-black print:bg-white print:border-t">
+        <div class="container mx-auto px-4 text-center">
+            <h4 class="text-xl font-bold mb-2">المهندس رمزي البازل</h4>
+            <p class="mb-4">🎓 المحاضرة الخامسة: أساسيات HTML - الهيكلة الأولى لبناء موقع الويب</p>
+            <div class="flex justify-center gap-6 mb-4 print:hidden">
+                <a href="mailto:ramzyalbazel700@gmail.com" class="hover:text-green-400"><i
+                        class="fas fa-envelope"></i></a>
+                <a href="https://t.me/web_note_bot" class="hover:text-green-400"><i class="fab fa-telegram"></i></a>
+            </div>
+            <p class="text-gray-400 text-sm">© 2026 جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- إضافة بعض التفاعلية -->
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW failed:', err));
+            });
+        }
+        // إضافة تأثير التمرير السلس للروابط الداخلية
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // إضافة تأثيرات للبطاقات عند التمرير
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // تطبيق التأثير على البطاقات
+        document.querySelectorAll('.section-card, .tag-card, .nav-item, .example-box').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+
+        // Config Tailwind
+        tailwind.config = {
+            darkMode: 'class',
+        }
+
+        // Dark Mode Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const html = document.documentElement;
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            html.classList.remove('dark');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.theme = 'light';
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+    </script>
+</body>
+
+</html>

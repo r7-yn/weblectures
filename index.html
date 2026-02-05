@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دورة تصميم الويب | م. رمزي البازل</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+    </style>
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+</head>
+
+<body
+    class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-primary dark:text-blue-400">
+                <i class="fas fa-code me-2"></i>دورة تصميم الويب
+            </h1>
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle"
+                    class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none">
+                    <i class="fas fa-moon text-gray-600 dark:text-yellow-300 text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16 text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-4">أهلاً بك في دورة تصميم الويب</h2>
+            <p class="text-lg opacity-90 mb-8">رحلة متكاملة لتعلم أحدث تقنيات الويب والتصميم</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 text-sm">
+                <a href="mailto:ramzyalbazel700@gmail.com" class="hover:text-blue-200 transition-colors">
+                    <i class="fas fa-envelope me-2"></i>ramzyalbazel700@gmail.com
+                </a>
+                <a href="https://t.me/web_note_bot" target="_blank" class="hover:text-blue-200 transition-colors">
+                    <i class="fab fa-telegram me-2"></i>@web_note_bot
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lectures Grid -->
+    <main class="flex-grow container mx-auto px-4 py-12">
+        <h3 class="text-2xl font-bold mb-8 border-r-4 border-primary px-4">المحاضرات والدروس</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Lecture Cards -->
+            <script>
+                const lectures = [
+                    { file: 'lec1.html', title: 'المحاضرة 1', desc: 'مقدمة في HTML وتاريخ الويب' },
+                    { file: 'lec2.html', title: 'المحاضرة 2', desc: 'أساسيات CSS وتنسيق الصفحات' },
+                    { file: 'lec3.html', title: 'المحاضرة 3', desc: 'تخطيط الصفحة وتوزيع العناصر' },
+                    { file: 'lec4.html', title: 'المحاضرة 4', desc: 'النماذج وإدخال البيانات' },
+                    { file: 'lec5.html', title: 'المحاضرة 5', desc: 'الوسائط المتعددة (صور، فيديو، صوت)' },
+                    { file: 'lec6.html', title: 'المحاضرة 6', desc: 'مقدمة في JavaScript' },
+                    // lec7 skipped as not in file list, jumping to 8 and 9 valid files
+                    { file: 'lec8.html', title: 'المحاضرة 8', desc: 'المفاهيم المتقدمة والتطبيقات' },
+                    { file: 'lec9.html', title: 'المحاضرة 9', desc: 'مشروع عملي ومراجعة شاملة' },
+                ];
+
+                document.write(lectures.map(lec => `
+                    <a href="${lec.file}" class="group block bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden hover:-translate-y-1">
+                        <div class="h-3 bg-primary group-hover:bg-blue-400 transition-colors"></div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 p-3 rounded-lg">
+                                    <i class="fas fa-book-open text-xl"></i>
+                                </div>
+                                <i class="fas fa-arrow-left text-gray-300 group-hover:text-primary transition-colors"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">${lec.title}</h4>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">${lec.desc}</p>
+                        </div>
+                    </a>
+                `).join(''));
+            </script>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <h4 class="text-xl font-bold mb-4">المهندس رمزي البازل</h4>
+            <div class="flex justify-center gap-6 mb-6">
+                <a href="mailto:ramzyalbazel700@gmail.com" class="hover:text-blue-400 text-2xl transition-colors"><i
+                        class="fas fa-envelope"></i></a>
+                <a href="https://t.me/web_note_bot" target="_blank"
+                    class="hover:text-blue-400 text-2xl transition-colors"><i class="fab fa-telegram"></i></a>
+            </div>
+            <p class="text-gray-400 text-sm">&copy; 2026 جميع الأسماء والحقوق محفوظة تصميم الويب</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const html = document.documentElement;
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            html.classList.remove('dark');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.theme = 'light';
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+    </script>
+</body>
+
+</html>

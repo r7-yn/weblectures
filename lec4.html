@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المحاضرة الرابعة: دورة حياة الموقع وأدوات التصميم</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .section-card {
+            transition: transform 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .lifecycle-step {
+            transition: all 0.3s ease;
+        }
+
+        .lifecycle-step:hover {
+            transform: scale(1.03);
+        }
+
+        .tool-card {
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .timeline-item {
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <!-- شريط التنقل -->
+    <nav
+        class="bg-teal-700 dark:bg-teal-900 text-white sticky top-0 z-50 shadow-lg print:hidden transition-colors duration-300">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="hover:text-teal-300 transition-colors">
+                        <i class="fas fa-arrow-right"></i> الرئيسية
+                    </a>
+                    <h1 class="text-xl font-bold">المحاضرة 4: دورة حياة الموقع</h1>
+                </div>
+                <div class="hidden md:flex space-x-6 space-x-reverse items-center">
+                    <a href="#types" class="hover:text-teal-300 transition-colors">أنواع المواقع</a>
+                    <a href="#lifecycle" class="hover:text-teal-300 transition-colors">دورة الحياة</a>
+                    <a href="#components" class="hover:text-teal-300 transition-colors">مكونات الموقع</a>
+                    <a href="#tools" class="hover:text-teal-300 transition-colors">الأدوات</a>
+                    <a href="#principles" class="hover:text-teal-300 transition-colors">مبادئ التصميم</a>
+                    <button onclick="window.print()"
+                        class="bg-white text-teal-900 px-3 py-1 rounded hover:bg-teal-100 transition-colors font-bold text-sm">
+                        <i class="fas fa-file-pdf me-1"></i> PDF
+                    </button>
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-white/10 transition-colors focus:outline-none">
+                        <i class="fas fa-moon text-white text-lg"></i>
+                    </button>
+                </div>
+                <button class="md:hidden text-xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- رأس الصفحة -->
+    <header
+        class="bg-gradient-to-r from-teal-600 to-cyan-700 dark:from-teal-900 dark:to-cyan-900 text-white py-16 print:py-10">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center mb-4">
+                <div class="bg-white bg-opacity-20 p-4 rounded-full">
+                    <i class="fas fa-sitemap text-4xl"></i>
+                </div>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-6">المحاضرة الرابعة: دورة حياة الموقع وأدوات تصميم وبناء مواقع
+                الويب الحديثة</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">من الفكرة إلى النشر: رحلة بناء موقع ويب متكامل</p>
+            <div class="max-w-4xl mx-auto bg-teal-800 bg-opacity-40 p-6 rounded-lg">
+                <p class="text-lg">
+                    قبل أن تبدأ أي تصميم، يجب أن تعرف أنواع المواقع لأن كل نوع له طبيعة مختلفة في التصميم والتنفيذ.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- أنواع مواقع الويب -->
+    <section id="types" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-teal-800">أولاً: أنواع مواقع الويب</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">كل نوع له طبيعة مختلفة في التصميم والتنفيذ</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- الموقع الشخصي -->
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-teal-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-teal-100 text-teal-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">مواقع شخصية</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        مثل: مواقع السيرة الذاتية، بورتفوليو المصممين والمصورين.
+                    </p>
+                    <div class="bg-teal-50 p-3 rounded">
+                        <p class="text-teal-700 font-bold">مثال:</p>
+                        <p class="text-teal-600">موقع مصور يعرض صوره وخدماته ونماذج أعماله.</p>
+                    </div>
+                </div>
+
+                <!-- مواقع الشركات -->
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-teal-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 text-blue-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">مواقع شركات</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        تُستخدم لتعريف الشركة وخدماتها ومنتجاتها.
+                    </p>
+                    <div class="bg-blue-50 p-3 rounded">
+                        <p class="text-blue-700 font-bold">مثال:</p>
+                        <p class="text-blue-600">موقع شركة تسويق رقمي يعرض خدمات التصميم والإعلان.</p>
+                    </div>
+                </div>
+
+                <!-- المتاجر الإلكترونية -->
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-teal-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">متاجر إلكترونية</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        تُستخدم للبيع عبر الإنترنت.
+                    </p>
+                    <div class="bg-yellow-50 p-3 rounded">
+                        <p class="text-yellow-700 font-bold">مثال:</p>
+                        <p class="text-yellow-600">متجر إلكتروني لبيع الأجهزة الإلكترونية.</p>
+                    </div>
+                </div>
+
+                <!-- مواقع تعليمية -->
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-teal-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 text-green-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">مواقع تعليمية</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        تُستخدم للتعلم الإلكتروني ونشر الدروس.
+                    </p>
+                    <div class="bg-green-50 p-3 rounded">
+                        <p class="text-green-700 font-bold">مثال:</p>
+                        <p class="text-green-600">منصة تعليمية لدروس البرمجة.</p>
+                    </div>
+                </div>
+
+                <!-- مواقع إخبارية -->
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-teal-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 text-red-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">مواقع إخبارية</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        مثل المواقع الإخبارية والقنوات الإعلامية.
+                    </p>
+                    <div class="bg-red-50 p-3 rounded">
+                        <p class="text-red-700 font-bold">مثال:</p>
+                        <p class="text-red-600">مواقع الأخبار المحلية والعالمية.</p>
+                    </div>
+                </div>
+
+                <!-- مواقع حكومية -->
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-teal-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 text-purple-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">مواقع حكومية</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        تقدم خدمات للمواطنين مثل استخراج الوثائق أو تعبئة النماذج.
+                    </p>
+                    <div class="bg-purple-50 p-3 rounded">
+                        <p class="text-purple-700 font-bold">مثال:</p>
+                        <p class="text-purple-600">موقع وزارة الداخلية أو بوابة الخدمات الحكومية.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- دورة حياة الموقع -->
+    <section id="lifecycle" class="py-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-teal-800">ثانيًا: دورة حياة الموقع (Website Lifecycle)
+            </h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">سلسلة مراحل يمر بها الموقع من الفكرة حتى النشر
+            </p>
+
+            <div class="max-w-5xl mx-auto">
+                <!-- الخط الزمني -->
+                <div class="relative">
+                    <!-- الخط المركزي -->
+                    <div class="absolute right-1/2 transform translate-x-1/2 h-full w-1 bg-teal-500 hidden md:block">
+                    </div>
+
+                    <!-- المراحل -->
+                    <div class="space-y-12">
+                        <!-- المرحلة 1 -->
+                        <div class="lifecycle-step flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:pr-8 mb-6 md:mb-0">
+                                <div class="bg-teal-50 p-6 rounded-lg shadow-md border-r-4 border-teal-500">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="bg-teal-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-4 font-bold">
+                                            1</div>
+                                        <h3 class="text-xl font-bold">مرحلة الفكرة</h3>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">
+                                        في هذه المرحلة تسأل نفسك: ماذا أريد أن أبني؟ ما هو الهدف من الموقع؟ من هم
+                                        المستخدمون المستهدفون؟
+                                    </p>
+                                    <div class="bg-white p-3 rounded border border-teal-200">
+                                        <p class="text-teal-700 font-bold">✅ مثال عملي:</p>
+                                        <p class="text-teal-600">طالب يريد إنشاء موقع لعرض كورسات رياضيات للصف التاسع.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-8">
+                                <div
+                                    class="bg-gray-200 p-4 rounded-lg text-center h-full flex items-center justify-center">
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <i class="fas fa-lightbulb text-4xl text-yellow-500 mb-2"></i>
+                                        <p class="text-gray-700 font-bold">توليد الأفكار</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 2 -->
+                        <div class="lifecycle-step flex flex-col md:flex-row-reverse items-center">
+                            <div class="md:w-1/2 md:pl-8 mb-6 md:mb-0">
+                                <div class="bg-blue-50 p-6 rounded-lg shadow-md border-r-4 border-blue-500">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-4 font-bold">
+                                            2</div>
+                                        <h3 class="text-xl font-bold">مرحلة البحث والتحليل</h3>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">
+                                        تقوم خلالها بـ: تحليل مواقع مشابهة، معرفة نقاط القوة والضعف فيها، تحديد المميزات
+                                        التي تريد إضافتها.
+                                    </p>
+                                    <div class="bg-white p-3 rounded border border-blue-200">
+                                        <p class="text-blue-700 font-bold">✅ مثال:</p>
+                                        <p class="text-blue-600">تقوم بالدخول إلى 3 مواقع تعليمية مشهورة ودراسة شكلها
+                                            وتنظيمها.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pr-8">
+                                <div
+                                    class="bg-gray-200 p-4 rounded-lg text-center h-full flex items-center justify-center">
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <i class="fas fa-search text-4xl text-blue-500 mb-2"></i>
+                                        <p class="text-gray-700 font-bold">بحث وتحليل</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 3 -->
+                        <div class="lifecycle-step flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:pr-8 mb-6 md:mb-0">
+                                <div class="bg-green-50 p-6 rounded-lg shadow-md border-r-4 border-green-500">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-4 font-bold">
+                                            3</div>
+                                        <h3 class="text-xl font-bold">مرحلة التخطيط</h3>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">
+                                        تحديد: صفحات الموقع (رئيسية – من نحن – الدروس – تواصل معنا)، ترتيب الأقسام.
+                                    </p>
+                                    <div class="bg-white p-3 rounded border border-green-200">
+                                        <p class="text-green-700 font-bold">✅ مثال:</p>
+                                        <p class="text-green-600">ترسم مخططًا بسيطًا على ورقة: الصفحة الرئيسية → صفحة
+                                            الدروس → صفحة التواصل</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-8">
+                                <div
+                                    class="bg-gray-200 p-4 rounded-lg text-center h-full flex items-center justify-center">
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <i class="fas fa-project-diagram text-4xl text-green-500 mb-2"></i>
+                                        <p class="text-gray-700 font-bold">تخطيط الهيكل</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 4 -->
+                        <div class="lifecycle-step flex flex-col md:flex-row-reverse items-center">
+                            <div class="md:w-1/2 md:pl-8 mb-6 md:mb-0">
+                                <div class="bg-yellow-50 p-6 rounded-lg shadow-md border-r-4 border-yellow-500">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="bg-yellow-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-4 font-bold">
+                                            4</div>
+                                        <h3 class="text-xl font-bold">مرحلة الرسم المبدئي (Wireframe)</h3>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">
+                                        رسم الهيكل بدون ألوان فقط أماكن العناصر: مكان الشعار، القائمة، المحتوى، الفوتر.
+                                    </p>
+                                    <div class="bg-white p-3 rounded border border-yellow-200">
+                                        <p class="text-yellow-700 font-bold">✅ مثال:</p>
+                                        <p class="text-yellow-600">ترسم مستطيلاً بالأعلى للشعار، وأسفلها مساحة للدروس.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pr-8">
+                                <div
+                                    class="bg-gray-200 p-4 rounded-lg text-center h-full flex items-center justify-center">
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <i class="fas fa-pencil-ruler text-4xl text-yellow-500 mb-2"></i>
+                                        <p class="text-gray-700 font-bold">رسم مبدئي</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 5 -->
+                        <div class="lifecycle-step flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:pr-8 mb-6 md:mb-0">
+                                <div class="bg-purple-50 p-6 rounded-lg shadow-md border-r-4 border-purple-500">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="bg-purple-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-4 font-bold">
+                                            5</div>
+                                        <h3 class="text-xl font-bold">مرحلة تصميم الواجهة (UI Design)</h3>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">
+                                        تستخدم فيها أدوات التصميم مثل: Figma أو Adobe XD أو Photoshop.
+                                    </p>
+                                    <div class="bg-white p-3 rounded border border-purple-200">
+                                        <p class="text-purple-700 font-bold">✅ مثال:</p>
+                                        <p class="text-purple-600">تصميم الواجهة بالألوان المناسبة والخطوط والتنسيق.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-8">
+                                <div
+                                    class="bg-gray-200 p-4 rounded-lg text-center h-full flex items-center justify-center">
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <i class="fas fa-palette text-4xl text-purple-500 mb-2"></i>
+                                        <p class="text-gray-700 font-bold">تصميم الواجهة</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 6 -->
+                        <div class="lifecycle-step flex flex-col md:flex-row-reverse items-center">
+                            <div class="md:w-1/2 md:pl-8 mb-6 md:mb-0">
+                                <div class="bg-indigo-50 p-6 rounded-lg shadow-md border-r-4 border-indigo-500">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="bg-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-4 font-bold">
+                                            6</div>
+                                        <h3 class="text-xl font-bold">مرحلة البرمجة والتنفيذ</h3>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">
+                                        تحويل التصميم إلى كود باستخدام: HTML، CSS، JavaScript وأدوات مثل: Dreamweaver أو
+                                        VS Code.
+                                    </p>
+                                    <div class="bg-white p-3 rounded border border-indigo-200">
+                                        <p class="text-indigo-700 font-bold">✅ مثال:</p>
+                                        <p class="text-indigo-600">تحويل صفحة الدروس إلى كود HTML فعلي.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pr-8">
+                                <div
+                                    class="bg-gray-200 p-4 rounded-lg text-center h-full flex items-center justify-center">
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <i class="fas fa-code text-4xl text-indigo-500 mb-2"></i>
+                                        <p class="text-gray-700 font-bold">البرمجة</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 7 -->
+                        <div class="lifecycle-step flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:pr-8 mb-6 md:mb-0">
+                                <div class="bg-red-50 p-6 rounded-lg shadow-md border-r-4 border-red-500">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-4 font-bold">
+                                            7</div>
+                                        <h3 class="text-xl font-bold">مرحلة الاختبار</h3>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">
+                                        اختبار الموقع على: الجوال، الكمبيوتر، متصفحات مختلفة.
+                                    </p>
+                                    <div class="bg-white p-3 rounded border border-red-200">
+                                        <p class="text-red-700 font-bold">✅ مثال:</p>
+                                        <p class="text-red-600">فتح الموقع على الهاتف والتأكد أن القوائم تظهر بشكل صحيح.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-8">
+                                <div
+                                    class="bg-gray-200 p-4 rounded-lg text-center h-full flex items-center justify-center">
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <i class="fas fa-vial text-4xl text-red-500 mb-2"></i>
+                                        <p class="text-gray-700 font-bold">اختبار الموقع</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 8 -->
+                        <div class="lifecycle-step flex flex-col md:flex-row-reverse items-center">
+                            <div class="md:w-1/2 md:pl-8 mb-6 md:mb-0">
+                                <div class="bg-pink-50 p-6 rounded-lg shadow-md border-r-4 border-pink-500">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="bg-pink-600 text-white rounded-full w-10 h-10 flex items-center justify-center mr-4 font-bold">
+                                            8</div>
+                                        <h3 class="text-xl font-bold">مرحلة النشر</h3>
+                                    </div>
+                                    <p class="text-gray-700 mb-4">
+                                        رفع الموقع على الإنترنت من خلال الاستضافة والدومين.
+                                    </p>
+                                    <div class="bg-white p-3 rounded border border-pink-200">
+                                        <p class="text-pink-700 font-bold">✅ مثال:</p>
+                                        <p class="text-pink-600">رفع الموقع على استضافة وربطه بدومين: example.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pr-8">
+                                <div
+                                    class="bg-gray-200 p-4 rounded-lg text-center h-full flex items-center justify-center">
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <i class="fas fa-rocket text-4xl text-pink-500 mb-2"></i>
+                                        <p class="text-gray-700 font-bold">نشر الموقع</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- مكونات موقع الويب الأساسية -->
+    <section id="components" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-teal-800">ثالثًا: مكونات موقع الويب الأساسية</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">أي موقع يحتوي على مكونات أساسية</p>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gray-100 p-6 rounded-lg mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Header -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-teal-200">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-teal-100 text-teal-600 p-2 rounded-full mr-3">
+                                    <i class="fas fa-header"></i>
+                                </div>
+                                <h3 class="text-lg font-bold">Header</h3>
+                            </div>
+                            <p class="text-gray-700 text-sm">يحوي الشعار والقائمة الرئيسية.</p>
+                        </div>
+
+                        <!-- Navigation Menu -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-teal-200">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-teal-100 text-teal-600 p-2 rounded-full mr-3">
+                                    <i class="fas fa-bars"></i>
+                                </div>
+                                <h3 class="text-lg font-bold">Navigation Menu</h3>
+                            </div>
+                            <p class="text-gray-700 text-sm">قائمة التنقل بين الصفحات.</p>
+                        </div>
+
+                        <!-- Main Content -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-teal-200">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-teal-100 text-teal-600 p-2 rounded-full mr-3">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <h3 class="text-lg font-bold">Main Content</h3>
+                            </div>
+                            <p class="text-gray-700 text-sm">المحتوى الرئيسي للموقع.</p>
+                        </div>
+
+                        <!-- Sidebar -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-teal-200">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-teal-100 text-teal-600 p-2 rounded-full mr-3">
+                                    <i class="fas fa-columns"></i>
+                                </div>
+                                <h3 class="text-lg font-bold">Sidebar (اختياري)</h3>
+                            </div>
+                            <p class="text-gray-700 text-sm">قائمة جانبية للمحتوى الإضافي.</p>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-teal-200 md:col-span-2">
+                            <div class="flex items-center mb-3">
+                                <div class="bg-teal-100 text-teal-600 p-2 rounded-full mr-3">
+                                    <i class="fas fa-window-minimize"></i>
+                                </div>
+                                <h3 class="text-lg font-bold">Footer</h3>
+                            </div>
+                            <p class="text-gray-700 text-sm">الجزء السفلي ويحتوي على معلومات التواصل وروابط مهمة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-teal-50 p-6 rounded-lg border border-teal-200">
+                    <h3 class="text-xl font-bold mb-4 text-teal-700">مثال عملي:</h3>
+                    <p class="text-gray-700 mb-2">في موقع تعليمي:</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-teal-500 mr-2"></div>
+                            <p class="text-gray-700">الهيدر: شعار المدرسة</p>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-teal-500 mr-2"></div>
+                            <p class="text-gray-700">المحتوى: الدروس</p>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-teal-500 mr-2"></div>
+                            <p class="text-gray-700">الفوتر: رقم التواصل والإيميل</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أدوات التصميم وبناء المواقع -->
+    <section id="tools" class="py-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-teal-800">رابعًا: أدوات التصميم وبناء المواقع</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">تسلسل زمني + وظيفتها</p>
+
+            <!-- الخط الزمني للأدوات -->
+            <div class="max-w-5xl mx-auto mb-12">
+                <div class="relative">
+                    <!-- الخط المركزي -->
+                    <div class="absolute right-0 left-0 top-1/2 h-1 bg-teal-500 hidden md:block"></div>
+
+                    <!-- المراحل -->
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                        <!-- المرحلة 1 -->
+                        <div class="timeline-item bg-white p-4 rounded-lg shadow-md border border-teal-200 text-center">
+                            <div
+                                class="bg-teal-100 text-teal-600 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">الأساسيات</h3>
+                            <p class="text-gray-700 text-sm mb-3">من 1997 حتى الآن</p>
+                            <div class="space-y-1 text-xs">
+                                <p class="bg-teal-50 p-1 rounded">Adobe Dreamweaver</p>
+                                <p class="bg-teal-50 p-1 rounded">Notepad++</p>
+                                <p class="bg-teal-50 p-1 rounded">Microsoft FrontPage</p>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 2 -->
+                        <div class="timeline-item bg-white p-4 rounded-lg shadow-md border border-blue-200 text-center">
+                            <div
+                                class="bg-blue-100 text-blue-600 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">التصميم البصري</h3>
+                            <p class="text-gray-700 text-sm mb-3">أدوات التصميم المرئي</p>
+                            <div class="space-y-1 text-xs">
+                                <p class="bg-blue-50 p-1 rounded">Photoshop</p>
+                                <p class="bg-blue-50 p-1 rounded">Adobe XD</p>
+                                <p class="bg-blue-50 p-1 rounded">Sketch</p>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 3 -->
+                        <div
+                            class="timeline-item bg-white p-4 rounded-lg shadow-md border border-green-200 text-center">
+                            <div
+                                class="bg-green-100 text-green-600 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">أدوات سحابية</h3>
+                            <p class="text-gray-700 text-sm mb-3">تصميم تعاوني</p>
+                            <div class="space-y-1 text-xs">
+                                <p class="bg-green-50 p-1 rounded">Figma</p>
+                                <p class="bg-green-50 p-1 rounded">Canva</p>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 4 -->
+                        <div
+                            class="timeline-item bg-white p-4 rounded-lg shadow-md border border-yellow-200 text-center">
+                            <div
+                                class="bg-yellow-100 text-yellow-600 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">بناء المواقع</h3>
+                            <p class="text-gray-700 text-sm mb-3">بدون برمجة عميقة</p>
+                            <div class="space-y-1 text-xs">
+                                <p class="bg-yellow-50 p-1 rounded">WordPress</p>
+                                <p class="bg-yellow-50 p-1 rounded">Wix</p>
+                                <p class="bg-yellow-50 p-1 rounded">Webflow</p>
+                            </div>
+                        </div>
+
+                        <!-- المرحلة 5 -->
+                        <div
+                            class="timeline-item bg-white p-4 rounded-lg shadow-md border border-purple-200 text-center">
+                            <div
+                                class="bg-purple-100 text-purple-600 p-3 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">أدوات برمجية</h3>
+                            <p class="text-gray-700 text-sm mb-3">للمبرمجين المحترفين</p>
+                            <div class="space-y-1 text-xs">
+                                <p class="bg-purple-50 p-1 rounded">VS Code</p>
+                                <p class="bg-purple-50 p-1 rounded">GitHub</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- شرح Dreamweaver -->
+            <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md border border-teal-200">
+                <h3 class="text-2xl font-bold mb-6 text-teal-800 text-center">شرح موسّع لبرنامج Adobe Dreamweaver</h3>
+                <p class="text-gray-700 mb-4 text-center">لأنه البرنامج الأساسي في تطبيقكم العملي</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- ما هو Dreamweaver -->
+                    <div class="bg-teal-50 p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-4 text-teal-700">ما هو Dreamweaver؟</h4>
+                        <p class="text-gray-700 mb-4">
+                            برنامج لتصميم وبرمجة مواقع الويب، يسمح لك بالعمل بطريقتين:
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <div class="bg-teal-100 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-eye text-teal-600"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold">عرض التصميم Visual</h5>
+                                    <p class="text-gray-700 text-sm">رؤية التصميم كما يظهر للمستخدم</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-teal-100 p-2 rounded-full mr-3 mt-1">
+                                    <i class="fas fa-code text-teal-600"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold">عرض الأكواد Code</h5>
+                                    <p class="text-gray-700 text-sm">كتابة وتعديل الكود مباشرة</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- واجهة البرنامج -->
+                    <div class="bg-blue-50 p-5 rounded-lg">
+                        <h4 class="text-xl font-bold mb-4 text-blue-700">واجهة البرنامج الرئيسية:</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                                <p class="text-gray-700">لوحة الملفات</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                                <p class="text-gray-700">منطقة التصميم</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                                <p class="text-gray-700">منطقة الكود</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                                <p class="text-gray-700">شريط الخصائص</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- مثال تطبيقي -->
+                <div class="mt-8 bg-gray-100 p-5 rounded-lg">
+                    <h4 class="text-xl font-bold mb-4 text-gray-800">استخدامه عمليًا – خطوة بخطوة:</h4>
+                    <div class="bg-white p-4 rounded border border-gray-300 mb-4">
+                        <p class="text-gray-700 font-mono text-sm">
+                            &lt;!DOCTYPE html&gt;<br>
+                            &lt;html&gt;<br>
+                            &lt;head&gt;<br>
+                            &nbsp;&nbsp;&lt;title&gt;موقعي التعليمي&lt;/title&gt;<br>
+                            &lt;/head&gt;<br>
+                            &lt;body&gt;<br>
+                            &nbsp;&nbsp;&lt;h1&gt;مرحبًا بكم في موقعي&lt;/h1&gt;<br>
+                            &nbsp;&nbsp;&lt;p&gt;هنا سننشر دروس الصف التاسع&lt;/p&gt;<br>
+                            &lt;/body&gt;<br>
+                            &lt;/html&gt;
+                        </p>
+                    </div>
+                    <p class="text-gray-700">✅ مثال تطبيقي: فتح البرنامج → إنشاء ملف جديد HTML → كتابة الكود → مشاهدة
+                        النتيجة مباشرة في وضع التصميم.</p>
+                </div>
+
+                <!-- مميزات Dreamweaver -->
+                <div class="mt-6 bg-green-50 p-5 rounded-lg">
+                    <h4 class="text-xl font-bold mb-4 text-green-700">مميزات Dreamweaver:</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-2 rounded-full mr-3 mt-1">
+                                <i class="fas fa-link text-green-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold">يربط بين التصميم والكود</h5>
+                                <p class="text-gray-700 text-sm">تعديلات فورية بين الواجهتين</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-2 rounded-full mr-3 mt-1">
+                                <i class="fas fa-graduation-cap text-green-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold">ممتاز للتعليم</h5>
+                                <p class="text-gray-700 text-sm">يسهل على الطلاب رؤية التأثير فورًا</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-2 rounded-full mr-3 mt-1">
+                                <i class="fas fa-cogs text-green-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold">يدعم CSS و JavaScript</h5>
+                                <p class="text-gray-700 text-sm">دعم كامل لتقنيات الويب الحديثة</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-2 rounded-full mr-3 mt-1">
+                                <i class="fas fa-university text-green-600"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold">ممتاز للأكاديميين</h5>
+                                <p class="text-gray-700 text-sm">مناسب للتعليم الأكاديمي</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- جدول الأدوات حسب المرحلة -->
+            <div class="max-w-4xl mx-auto mt-12 bg-white p-6 rounded-lg shadow-md border border-teal-200">
+                <h3 class="text-2xl font-bold mb-6 text-teal-800 text-center">كيف تستخدم الأدوات ضمن دورة الحياة؟</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-right">
+                        <thead class="bg-teal-100">
+                            <tr>
+                                <th class="p-3 font-bold">المرحلة</th>
+                                <th class="p-3 font-bold">الأدوات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="p-3 font-medium">الفكرة</td>
+                                <td class="p-3">ورقة + قلم</td>
+                            </tr>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <td class="p-3 font-medium">التصميم المبدئي</td>
+                                <td class="p-3">Figma</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="p-3 font-medium">التصميم النهائي</td>
+                                <td class="p-3">Adobe XD</td>
+                            </tr>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <td class="p-3 font-medium">البرمجة</td>
+                                <td class="p-3">Dreamweaver</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="p-3 font-medium">الاختبار</td>
+                                <td class="p-3">متصفح الويب</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="p-3 font-medium">النشر</td>
+                                <td class="p-3">استضافة + دومين</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- مبادئ التصميم الجيد -->
+    <section id="principles" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-teal-800">سابعًا: تذكير - مبادئ التصميم الجيد لمواقع
+                الويب</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">أسس تصميم مواقع ويب ناجحة وفعالة</p>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- البساطة -->
+                    <div class="tool-card bg-white p-6 rounded-lg shadow-md border border-teal-200 text-center">
+                        <div
+                            class="bg-teal-100 text-teal-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-leaf text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-teal-700">البساطة</h3>
+                        <p class="text-gray-700">لا تكثر عناصر. التصميم البسيط أكثر فعالية وسهولة في الاستخدام.</p>
+                    </div>
+
+                    <!-- التناسق -->
+                    <div class="tool-card bg-white p-6 rounded-lg shadow-md border border-blue-200 text-center">
+                        <div
+                            class="bg-blue-100 text-blue-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-sync-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-blue-700">التناسق</h3>
+                        <p class="text-gray-700">نفس الألوان والخطوط عبر جميع صفحات الموقع لتجربة متسقة.</p>
+                    </div>
+
+                    <!-- الوضوح -->
+                    <div class="tool-card bg-white p-6 rounded-lg shadow-md border border-green-200 text-center">
+                        <div
+                            class="bg-green-100 text-green-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-eye text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-green-700">الوضوح</h3>
+                        <p class="text-gray-700">المستخدم يفهم الموقع بسرعة دون الحاجة إلى تعلم كيفية استخدامه.</p>
+                    </div>
+
+                    <!-- السرعة -->
+                    <div class="tool-card bg-white p-6 rounded-lg shadow-md border border-yellow-200 text-center">
+                        <div
+                            class="bg-yellow-100 text-yellow-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-tachometer-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-yellow-700">السرعة</h3>
+                        <p class="text-gray-700">الموقع سريع في التحميل لضمان تجربة مستخدم إيجابية.</p>
+                    </div>
+
+                    <!-- التجاوب -->
+                    <div class="tool-card bg-white p-6 rounded-lg shadow-md border border-purple-200 text-center">
+                        <div
+                            class="bg-purple-100 text-purple-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-mobile-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-purple-700">التجاوب</h3>
+                        <p class="text-gray-700">يعمل على الجوال والكمبيوتر وجميع أحجام الشاشات.</p>
+                    </div>
+
+                    <!-- مثال عملي -->
+                    <div
+                        class="tool-card bg-white p-6 rounded-lg shadow-md border border-pink-200 text-center md:col-span-2 lg:col-span-3">
+                        <div
+                            class="bg-pink-100 text-pink-600 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-lightbulb text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-pink-700">مثال عملي</h3>
+                        <p class="text-gray-700">موقع تعليمي بخلفية بيضاء، خط واضح، وأزرار كبيرة للطلاب.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- خاتمة -->
+    <section class="py-16 bg-gradient-to-r from-teal-600 to-cyan-700 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-8">الخلاصة</h2>
+            <div class="max-w-3xl mx-auto bg-teal-800 bg-opacity-40 p-8 rounded-lg">
+                <p class="text-xl mb-6">
+                    فهم دورة حياة الموقع ومعرفة الأدوات المناسبة لكل مرحلة هو الأساس لبناء مواقع ويب ناجحة.
+                </p>
+                <p class="text-xl">
+                    من الفكرة البسيطة إلى الموقع المنشور على الإنترنت، كل خطوة تحتاج إلى التخطيط والتنفيذ الدقيق
+                    باستخدام الأدوات المناسبة.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-4">المحاضرة الرابعة: دورة حياة الموقع وأدوات تصميم وبناء مواقع الويب الحديثة</p>
+            <p class="text-gray-400">من الفكرة إلى النشر: رحلة بناء موقع ويب متكامل</p>
+        </div>
+    </footer>
+
+    <!-- إضافة بعض التفاعلية -->
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW failed:', err));
+            });
+        }
+        // إضافة تأثير التمرير السلس للروابط الداخلية
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // إضافة تأثيرات للبطاقات عند التمرير
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // تطبيق التأثير على البطاقات
+        document.querySelectorAll('.section-card, .lifecycle-step, .tool-card, .timeline-item').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+
+        // Config Tailwind
+        tailwind.config = {
+            darkMode: 'class',
+        }
+
+        // Dark Mode Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const html = document.documentElement;
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            html.classList.remove('dark');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.theme = 'light';
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+    </script>
+</body>
+
+</html>

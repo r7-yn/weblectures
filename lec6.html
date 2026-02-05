@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المحاضرة السادسة: مقدمة في CSS - تنسيق صفحات الويب</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .section-card {
+            transition: transform 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .css-selector-card {
+            transition: all 0.3s ease;
+        }
+
+        .css-selector-card:hover {
+            transform: scale(1.03);
+        }
+
+        .code-block {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .property-card {
+            transition: all 0.3s ease;
+        }
+
+        .property-card:hover {
+            transform: scale(1.02);
+        }
+
+        .example-box {
+            transition: all 0.3s ease;
+        }
+
+        .example-box:hover {
+            transform: scale(1.01);
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            transform: translateX(-5px);
+        }
+
+        .css-tag {
+            font-family: monospace;
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #2965f1;
+        }
+
+        /* CSS examples styling */
+        .css-example {
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .hover-effect:hover {
+            background-color: #e0f2fe;
+            transform: scale(1.02);
+        }
+
+        .box-model-example {
+            width: 200px;
+            height: 100px;
+            padding: 20px;
+            border: 5px solid #3b82f6;
+            margin: 30px;
+            background-color: #dbeafe;
+            text-align: center;
+            line-height: 100px;
+        }
+
+        .display-example {
+            background-color: #f3f4f6;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .display-block {
+            display: block;
+            background-color: #93c5fd;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        .display-inline {
+            display: inline;
+            background-color: #93c5fd;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        .display-inline-block {
+            display: inline-block;
+            background-color: #93c5fd;
+            padding: 10px;
+            margin: 5px;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <!-- شريط التنقل -->
+    <nav
+        class="bg-blue-700 dark:bg-blue-900 text-white sticky top-0 z-50 shadow-lg print:hidden transition-colors duration-300">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="hover:text-blue-300 transition-colors">
+                        <i class="fas fa-arrow-right"></i> الرئيسية
+                    </a>
+                    <h1 class="text-xl font-bold">المحاضرة 6: مقدمة في CSS</h1>
+                </div>
+                <div class="hidden md:flex space-x-6 space-x-reverse items-center">
+                    <a href="#what-is-css" class="hover:text-blue-300 transition-colors nav-item">ما هي CSS</a>
+                    <a href="#linking-css" class="hover:text-blue-300 transition-colors nav-item">ربط CSS</a>
+                    <a href="#selectors" class="hover:text-blue-300 transition-colors nav-item">المحددات</a>
+                    <a href="#properties" class="hover:text-blue-300 transition-colors nav-item">الخصائص</a>
+                    <a href="#example" class="hover:text-blue-300 transition-colors nav-item">مثال عملي</a>
+                    <a href="#concepts" class="hover:text-blue-300 transition-colors nav-item">مفاهيم أساسية</a>
+                    <button onclick="window.print()"
+                        class="bg-white text-blue-900 px-3 py-1 rounded hover:bg-blue-100 transition-colors font-bold text-sm">
+                        <i class="fas fa-file-pdf me-1"></i> PDF
+                    </button>
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-white/10 transition-colors focus:outline-none">
+                        <i class="fas fa-moon text-white text-lg"></i>
+                    </button>
+                </div>
+                <button class="md:hidden text-xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- رأس الصفحة -->
+    <header
+        class="bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-900 dark:to-indigo-900 text-white py-16 print:py-10">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center mb-4">
+                <div class="bg-white bg-opacity-20 p-4 rounded-full">
+                    <i class="fab fa-css3-alt text-4xl"></i>
+                </div>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-6">🎓 المحاضرة السادسة: مقدمة في CSS - تنسيق صفحات الويب</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">CSS هي الأداة التي تُحوّل صفحة HTML من شكل بسيط إلى
+                صفحة جميلة واحترافية</p>
+            <div class="max-w-4xl mx-auto bg-blue-800 bg-opacity-40 p-6 rounded-lg">
+                <p class="text-lg">
+                    CSS = Cascading Style Sheets (صفحات الأنماط الانسيابية) - لغة تُستخدم لتنسيق صفحات الويب بالألوان
+                    والخطوط والخلفيات والمسافات.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- ما هي CSS؟ -->
+    <section id="what-is-css" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-blue-800">⭐ المقدمة: ما هي CSS؟</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">CSS = Cascading Style Sheets - صفحات الأنماط
+                الانسيابية</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-blue-200">
+                    <h3 class="text-xl font-bold mb-4 text-blue-700">ما هي CSS؟</h3>
+                    <p class="text-gray-700 mb-4">
+                        CSS هي لغة تُستخدم لتنسيق صفحات الويب، مثل:
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg text-center">
+                            <i class="fas fa-palette text-blue-600 text-2xl mb-2"></i>
+                            <p class="text-blue-700 font-bold">الألوان</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg text-center">
+                            <i class="fas fa-font text-blue-600 text-2xl mb-2"></i>
+                            <p class="text-blue-700 font-bold">الخطوط</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg text-center">
+                            <i class="fas fa-layer-group text-blue-600 text-2xl mb-2"></i>
+                            <p class="text-blue-700 font-bold">الخلفيات</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg text-center">
+                            <i class="fas fa-arrows-alt text-blue-600 text-2xl mb-2"></i>
+                            <p class="text-blue-700 font-bold">المسافات</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">الفرق بين HTML و CSS</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3 mt-1">
+                                <i class="fab fa-html5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">HTML</h4>
+                                <p class="text-gray-700 text-sm">يحدد محتوى وهيكل الصفحة</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3 mt-1">
+                                <i class="fab fa-css3-alt text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">CSS</h4>
+                                <p class="text-gray-700 text-sm">يحدد الشكل والمظهر والتصميم</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg border border-blue-200 mt-4">
+                        <p class="text-blue-700 font-bold text-center">HTML = محتوى | CSS = شكل وتصميم</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- كيف نربط CSS بصفحة HTML؟ -->
+    <section id="linking-css" class="py-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-blue-800">🔹 أولًا: كيف نربط CSS بصفحة HTML؟</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">ثلاث طرق شهيرة لربط CSS بـ HTML</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Internal CSS -->
+                <div class="css-selector-card bg-white p-6 rounded-lg shadow-md border border-blue-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 text-blue-600 p-3 rounded-full mr-4">
+                            <span class="font-bold">1️⃣</span>
+                        </div>
+                        <h3 class="text-xl font-bold">Internal CSS</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">يُكتب داخل الصفحة نفسها</p>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                        <pre><code class="language-html">&lt;style&gt;
+  h1 { 
+    color: blue; 
+  }
+&lt;/style&gt;</code></pre>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded mt-4">
+                        <p class="text-blue-700 text-sm">يُكتب داخل <span
+                                class="font-bold">&lt;head&gt;&lt;/head&gt;</span></p>
+                    </div>
+                </div>
+
+                <!-- Inline CSS -->
+                <div class="css-selector-card bg-white p-6 rounded-lg shadow-md border border-yellow-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full mr-4">
+                            <span class="font-bold">2️⃣</span>
+                        </div>
+                        <h3 class="text-xl font-bold">Inline CSS</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">داخل الوسم نفسه</p>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                        <pre><code class="language-html">&lt;p style="color: red;"&gt;
+  نص أحمر
+&lt;/p&gt;</code></pre>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded mt-4">
+                        <p class="text-yellow-700 text-sm">هذه الطريقة سريعة لكنها غير احترافية</p>
+                    </div>
+                </div>
+
+                <!-- External CSS -->
+                <div class="css-selector-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 text-green-600 p-3 rounded-full mr-4">
+                            <span class="font-bold">3️⃣</span>
+                        </div>
+                        <h3 class="text-xl font-bold">External CSS</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">ملف خارجي (الأفضل)</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                            <pre><code class="language-css">/* style.css */
+h1 { 
+  color: green; 
+}</code></pre>
+                        </div>
+                        <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                            <pre><code class="language-html">&lt;!-- داخل ملف HTML --&gt;
+&lt;link rel="stylesheet" 
+      href="style.css"&gt;</code></pre>
+                        </div>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded mt-4">
+                        <p class="text-green-700 text-sm font-bold">هذه الطريقة هي المعتمدة عالميًا</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- محددات CSS (Selectors) -->
+    <section id="selectors" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-blue-800">🔹 ثانيًا: محددات CSS (Selectors)</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">CSS تحتاج إلى اختيار العناصر المراد تنسيقها</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Element Selector -->
+                <div class="css-selector-card bg-white p-6 rounded-lg shadow-md border border-blue-200">
+                    <h3 class="text-xl font-bold mb-4 text-blue-700">1) محدد الوسم (Element Selector)</h3>
+                    <p class="text-gray-700 mb-4">يستهدف جميع العناصر من نوع معين</p>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                        <pre><code class="language-css">p { 
+  color: blue; 
+}</code></pre>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-gray-700 text-sm">يؤثر على جميع عناصر <span class="font-bold">&lt;p&gt;</span> في
+                            الصفحة</p>
+                    </div>
+                </div>
+
+                <!-- Class Selector -->
+                <div class="css-selector-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">2) محدد الصنف (Class)</h3>
+                    <p class="text-gray-700 mb-4">الأكثر استخدامًا عالميًا</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                            <pre><code class="language-html">&lt;p class="intro"&gt;
+  مرحبا!
+&lt;/p&gt;</code></pre>
+                        </div>
+                        <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                            <pre><code class="language-css">.intro { 
+  color: red; 
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-gray-700 text-sm">يستخدم النقطة <span class="font-bold">.</span> قبل اسم الكلاس
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ID Selector -->
+                <div class="css-selector-card bg-white p-6 rounded-lg shadow-md border border-purple-200">
+                    <h3 class="text-xl font-bold mb-4 text-purple-700">3) محدد المعرف (ID)</h3>
+                    <p class="text-gray-700 mb-4">يُستخدم لعنصر واحد فقط</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                            <pre><code class="language-html">&lt;h1 id="main-title"&gt;
+  العنوان
+&lt;/h1&gt;</code></pre>
+                        </div>
+                        <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                            <pre><code class="language-css">#main-title { 
+  font-size: 30px; 
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-gray-700 text-sm">يستخدم الهاشتاج <span class="font-bold">#</span> قبل اسم الـ ID
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أهم الخصائص الأساسية في CSS -->
+    <section id="properties" class="py-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-blue-800">🔹 ثالثًا: أهم الخصائص الأساسية في CSS</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">الخصائص الأساسية التي يحتاجها الطالب للبدء</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- الألوان -->
+                <div class="property-card bg-white p-6 rounded-lg shadow-md border border-blue-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 text-red-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">🚀 1) الألوان (Colors)</h3>
+                    </div>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block mb-4">
+                        <pre><code class="language-css">h1 { 
+  color: #006F88; 
+}</code></pre>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded">
+                        <p class="text-blue-700 text-sm font-bold">طرق كتابة الألوان:</p>
+                        <ul class="list-disc list-inside text-blue-600 text-sm space-y-1 mt-2">
+                            <li>Hex - #RRGGBB</li>
+                            <li>RGB - rgb(255, 0, 0)</li>
+                            <li>RGBA - rgba(255, 0, 0, 0.5)</li>
+                            <li>Color Name - red, blue</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- الخلفيات -->
+                <div class="property-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 text-green-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">🚀 2) الخلفيات (Background)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 gap-3">
+                        <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                            <pre><code class="language-css">body { 
+  background-color: #f3f3f3; 
+}</code></pre>
+                        </div>
+                        <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                            <pre><code class="language-css">section { 
+  background-image: url("bg.jpg"); 
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الخطوط -->
+                <div class="property-card bg-white p-6 rounded-lg shadow-md border border-yellow-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-font"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">🚀 3) الخطوط (Fonts)</h3>
+                    </div>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                        <pre><code class="language-css">p { 
+  font-size: 18px; 
+  font-family: Arial; 
+  font-weight: bold; 
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- الحدود -->
+                <div class="property-card bg-white p-6 rounded-lg shadow-md border border-purple-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 text-purple-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-square"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">🚀 4) الحدود (Borders)</h3>
+                    </div>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                        <pre><code class="language-css">div { 
+  border: 2px solid black; 
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- المسافات -->
+                <div class="property-card bg-white p-6 rounded-lg shadow-md border border-indigo-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-100 text-indigo-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-arrows-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">🚀 5) المسافات (Padding & Margin)</h3>
+                    </div>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                        <pre><code class="language-css">div { 
+  padding: 20px; 
+  margin: 10px; 
+}</code></pre>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded mt-4">
+                        <p class="text-indigo-700 text-sm"><span class="font-bold">Padding:</span> المسافة الداخلية بين
+                            المحتوى والحدود</p>
+                        <p class="text-indigo-700 text-sm"><span class="font-bold">Margin:</span> المسافة الخارجية بين
+                            العنصر والعناصر الأخرى</p>
+                    </div>
+                </div>
+
+                <!-- العرض والارتفاع -->
+                <div class="property-card bg-white p-6 rounded-lg shadow-md border border-pink-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-pink-100 text-pink-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">🚀 6) العرض والارتفاع (Width & Height)</h3>
+                    </div>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block">
+                        <pre><code class="language-css">img { 
+  width: 300px; 
+  height: auto; 
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- مثال عملي – تحسين صفحة HTML باستخدام CSS -->
+    <section id="example" class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-blue-800">🔹 رابعًا: مثال عملي – تحسين صفحة HTML
+                باستخدام CSS</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">نرى كيف تتحول صفحة HTML بسيطة إلى صفحة جميلة
+                باستخدام CSS</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- HTML Code -->
+                <div class="example-box bg-gray-800 text-green-300 p-6 rounded-lg code-block">
+                    <h3 class="text-xl font-bold mb-4 text-white text-center">🔰 HTML</h3>
+                    <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;موقعي الأول&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;مرحبًا بكم في موقعي&lt;/h1&gt;
+    &lt;/header&gt;
+    
+    &lt;section class="about"&gt;
+        &lt;h2&gt;نبذة عني&lt;/h2&gt;
+        &lt;p&gt;أنا مطور ويب مبتدئ وأتعلم HTML وCSS.&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+
+                <!-- CSS Code -->
+                <div class="example-box bg-gray-800 text-green-300 p-6 rounded-lg code-block">
+                    <h3 class="text-xl font-bold mb-4 text-white text-center">🔰 style.css</h3>
+                    <pre><code class="language-css">body {
+    font-family: Arial;
+    background-color: #f5f5f5;
+    margin: 0;
+}
+
+header {
+    background-color: #006F88;
+    padding: 20px;
+}
+
+header h1 {
+    color: white;
+    text-align: center;
+}
+
+.about {
+    background: white;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+}
+
+h2 {
+    color: #006F88;
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- النتيجة -->
+            <div class="example-box bg-white p-6 rounded-lg shadow-md border border-blue-200 mt-8">
+                <h3 class="text-xl font-bold mb-4 text-blue-700 text-center">النتيجة النهائية:</h3>
+                <div class="css-example">
+                    <div style="font-family: Arial; background-color: #f5f5f5; margin: 0;">
+                        <div style="background-color: #006F88; padding: 20px;">
+                            <h1 style="color: white; text-align: center; margin: 0;">مرحبًا بكم في موقعي</h1>
+                        </div>
+
+                        <div style="background: white; padding: 20px; margin: 20px; border-radius: 8px;">
+                            <h2 style="color: #006F88; margin-top: 0;">نبذة عني</h2>
+                            <p>أنا مطور ويب مبتدئ وأتعلم HTML وCSS.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200 mt-4">
+                    <p class="text-green-700 font-bold text-center">✅ لاحظ الفرق الكبير بعد إضافة CSS!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- مفاهيم أساسية تساعد الطالب -->
+    <section id="concepts" class="py-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-blue-800">🔹 خامسًا: مفاهيم أساسية تساعد الطالب</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">مفاهيم مهمة لفهم كيفية عمل CSS</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Box Model -->
+                <div class="css-selector-card bg-white p-6 rounded-lg shadow-md border border-blue-200">
+                    <h3 class="text-xl font-bold mb-4 text-blue-700">1️⃣ الصندوق (CSS Box Model)</h3>
+                    <p class="text-gray-700 mb-4">كل عنصر هو صندوق يحتوي على:</p>
+                    <div class="flex flex-col items-center">
+                        <div class="box-model-example">
+                            Content
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg w-full mt-4">
+                            <ul class="list-disc list-inside text-blue-600 space-y-2">
+                                <li><span class="font-bold">Margin</span> - المسافة الخارجية</li>
+                                <li><span class="font-bold">Border</span> - الحدود</li>
+                                <li><span class="font-bold">Padding</span> - المسافة الداخلية</li>
+                                <li><span class="font-bold">Content</span> - المحتوى</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-gray-700 text-sm">هذا المفهوم أساس تصميم أي صفحة</p>
+                    </div>
+                </div>
+
+                <!-- Display -->
+                <div class="css-selector-card bg-white p-6 rounded-lg shadow-md border border-green-200">
+                    <h3 class="text-xl font-bold mb-4 text-green-700">2️⃣ العرض الافتراضي للعناصر (Display)</h3>
+                    <p class="text-gray-700 mb-4">أشهر قيم خاصية display:</p>
+                    <div class="display-example">
+                        <p class="font-bold mb-2">display: block</p>
+                        <div class="display-block">عنصر بلوك</div>
+                        <div class="display-block">عنصر بلوك آخر</div>
+
+                        <p class="font-bold mb-2 mt-4">display: inline</p>
+                        <div class="display-inline">عنصر</div>
+                        <div class="display-inline">عرض</div>
+                        <div class="display-inline">ضمني</div>
+
+                        <p class="font-bold mb-2 mt-4">display: inline-block</p>
+                        <div class="display-inline-block">inline</div>
+                        <div class="display-inline-block">block</div>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded mt-4">
+                        <p class="text-green-700 text-sm">سيأتي لاحقًا: <span class="font-bold">flex</span> و <span
+                                class="font-bold">grid</span></p>
+                    </div>
+                </div>
+
+                <!-- Pseudo-classes -->
+                <div class="css-selector-card bg-white p-6 rounded-lg shadow-md border border-purple-200">
+                    <h3 class="text-xl font-bold mb-4 text-purple-700">3️⃣ Pseudo-classes (التأثيرات)</h3>
+                    <p class="text-gray-700 mb-4">تأثيرات تفاعلية عند تمرير الماوس</p>
+                    <div class="bg-gray-800 text-green-300 p-3 rounded code-block mb-4">
+                        <pre><code class="language-css">a:hover { 
+  color: red; 
+}</code></pre>
+                    </div>
+                    <div class="flex justify-center">
+                        <a href="#"
+                            class="hover-effect bg-blue-100 text-blue-700 px-6 py-3 rounded-lg font-bold transition-all duration-300">
+                            جرب مرر الماوس فوقي!
+                        </a>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded mt-4">
+                        <p class="text-purple-700 text-sm"><span class="font-bold">:hover</span> هو أشهر pseudo-class
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تمرين للطلاب -->
+
+
+    <!-- خاتمة -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-8">اخيراً</h2>
+            <div class="max-w-3xl mx-auto bg-blue-800 bg-opacity-40 p-8 rounded-lg">
+                <p class="text-xl mb-6">
+                    CSS هي الخطوة الأساسية لجعل أي موقع جميل واحترافي.
+                </p>
+                <p class="text-xl mb-6">
+                    وهي لغة بسيطة لكنها قوية جدًا، وستفتح الطريق لاحقًا لمراحل متقدمة مثل:
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-white bg-opacity-20 p-3 rounded">Flexbox</div>
+                    <div class="bg-white bg-opacity-20 p-3 rounded">Grid</div>
+                    <div class="bg-white bg-opacity-20 p-3 rounded">Animation</div>
+                    <div class="bg-white bg-opacity-20 p-3 rounded">Responsive Design</div>
+                    <div class="bg-white bg-opacity-20 p-3 rounded">Bootstrap</div>
+                    <div class="bg-white bg-opacity-20 p-3 rounded">Tailwind CSS</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer class="bg-gray-900 text-white py-8 print:text-black print:bg-white print:border-t">
+        <div class="container mx-auto px-4 text-center">
+            <h4 class="text-xl font-bold mb-2">المهندس رمزي البازل</h4>
+            <p class="mb-4">🎓 المحاضرة السادسة: مقدمة في CSS - تنسيق صفحات الويب</p>
+            <div class="flex justify-center gap-6 mb-4 print:hidden">
+                <a href="mailto:ramzyalbazel700@gmail.com" class="hover:text-blue-400"><i
+                        class="fas fa-envelope"></i></a>
+                <a href="https://t.me/web_note_bot" class="hover:text-blue-400"><i class="fab fa-telegram"></i></a>
+                });
+                });
+
+                // إضافة تأثيرات للبطاقات عند التمرير
+                const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+                }
+                });
+                }, observerOptions);
+
+                // تطبيق التأثير على البطاقات
+                document.querySelectorAll('.section-card, .css-selector-card, .property-card, .example-box,
+                .nav-item').forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+                });
+
+                // Config Tailwind
+                tailwind.config = {
+                darkMode: 'class',
+                }
+
+                // Dark Mode Logic
+                const themeToggle = document.getElementById('theme-toggle');
+                const themeIcon = themeToggle.querySelector('i');
+                const html = document.documentElement;
+
+                // Check local storage or system preference
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                } else {
+                html.classList.remove('dark');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                }
+
+                themeToggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
+                if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                } else {
+                localStorage.theme = 'light';
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                }
+                });
+                </script>
+</body>
+
+</html>

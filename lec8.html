@@ -1,0 +1,2373 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المحاضرة الثامنة: JavaScript و Bootstrap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <style>
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 2rem;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .code-block {
+            font-family: 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .live-demo {
+            border: 3px dashed #4F46E5;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f9fafb;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #4F46E5, #7C3AED);
+            transition: width 0.5s ease;
+        }
+
+        .btn-demo {
+            transition: all 0.3s ease;
+        }
+
+        .btn-demo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Print Styles */
+        @media print {
+            .slide {
+                display: block !important;
+                opacity: 1 !important;
+                min-height: auto !important;
+                height: auto !important;
+                page-break-after: always;
+                animation: none !important;
+                background: white !important;
+                color: black !important;
+            }
+
+            .slide h1,
+            .slide h2,
+            .slide h3,
+            .slide h4,
+            .slide p,
+            .slide span,
+            .slide div {
+                color: black !important;
+                text-shadow: none !important;
+            }
+
+            .bg-white\/90,
+            .backdrop-blur-sm,
+            .shadow-lg,
+            .shadow-xl {
+                background: none !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc;
+            }
+
+            #prevBtn,
+            #nextBtn,
+            #menuBtn,
+            #slideMenu,
+            .fixed.top-0,
+            nav.fixed.bottom-4,
+            #topNav,
+            .progress-bar {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+                color: black !important;
+            }
+
+            .print\:hidden {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <!-- Top Nav -->
+    <nav id="topNav"
+        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-[60] shadow-sm print:hidden border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <a href="index.html"
+                        class="flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                        <i class="fas fa-arrow-right"></i>
+                        <span class="font-bold">الرئيسية</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="window.print()"
+                        class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors font-bold text-sm flex items-center gap-2">
+                        <i class="fas fa-file-pdf"></i>
+                        <span class="hidden sm:inline">تحميل PDF</span>
+                    </button>
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none text-gray-700 dark:text-gray-200">
+                        <i class="fas fa-moon text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- شريط التقدم -->
+    <div class="fixed top-[60px] left-0 right-0 z-50">
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill" style="width: 7.14%"></div>
+        </div>
+    </div>
+
+    <!-- شريط التنقل -->
+    <nav
+        class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg z-40 p-2 flex items-center space-x-2 space-x-reverse">
+        <button id="prevBtn" class="p-3 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="px-4 py-2 text-sm font-medium text-gray-700">
+            <span id="currentSlide">1</span> / 12
+        </div>
+        <button id="nextBtn" class="p-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button id="menuBtn" class="p-3 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- قائمة الشرائح -->
+    <div id="slideMenu" class="fixed inset-0 bg-black/70 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">قائمة الشرائح</h3>
+                <button id="closeMenuBtn" class="p-2 rounded-full hover:bg-gray-100">
+                    <i class="fas fa-times text-gray-600"></i>
+                </button>
+            </div>
+            <div class="space-y-2">
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="1">
+                    <span class="font-medium text-gray-700">1. العنوان والأهداف</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="2">
+                    <span class="font-medium text-gray-700">2. لماذا JS + Bootstrap؟</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="3">
+                    <span class="font-medium text-gray-700">3. نظرة سريعة على JavaScript</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="4">
+                    <span class="font-medium text-gray-700">4. أول تفاعل بـ JavaScript</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="5">
+                    <span class="font-medium text-gray-700">5. مقدمة إلى Bootstrap</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="6">
+                    <span class="font-medium text-gray-700">6. مثال تطبيقي متكامل</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="7">
+                    <span class="font-medium text-gray-700">7. عناصر مهمة للتعلم</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="8">
+                    <span class="font-medium text-gray-700">8. مشروع: قائمة المهام</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="9">
+                    <span class="font-medium text-gray-700">9. مخاطر وسلبيات</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="10">
+                    <span class="font-medium text-gray-700">10. خاتمة وتلخيص</span>
+                </button>
+
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="12">
+                    <span class="font-medium text-gray-700">11. اختبار قصير</span>
+                </button>
+                <button
+                    class="slide-menu-item w-full text-right p-3 rounded-lg hover:bg-purple-50 border border-transparent hover:border-purple-200"
+                    data-slide="13">
+                    <span class="font-medium text-gray-700">12. مصطلحات</span>
+                </button>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- الشرائح -->
+    <div id="slidesContainer">
+        <!-- الشريحة 1: العنوان والأهداف -->
+        <section id="slide1" class="slide active bg-gradient-to-br from-blue-50 to-purple-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-block px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-semibold mb-4">المحاضرة
+                        الثامنة</span>
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                        <span class="text-yellow-500">🎓</span> JavaScript و Bootstrap <span
+                            class="text-yellow-500">🚀</span><br>
+                        <span class="text-purple-700 text-3xl md:text-4xl">من الصفحات الثابتة إلى مواقع ويب تفاعلية
+                            واحترافية</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">دمج قوة التفاعل مع جمال التصميم</p>
+                </div>
+
+                <div
+                    class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 mb-8 transition-colors duration-300">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 border-r-4 border-purple-500 pr-4">
+                        <i class="fas fa-bullseye text-purple-600 ml-2"></i>
+                        الأهداف التعليمية
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-gradient-to-r from-blue-50 to-white p-6 rounded-xl border border-blue-100">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center ml-3">
+                                    <i class="fab fa-js text-blue-600 text-xl"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800">فهم JavaScript</h3>
+                            </div>
+                            <p class="text-gray-700">فهم دور JavaScript في إضافة التفاعل إلى صفحات الويب والتحكم في سلوك
+                                الصفحة</p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-purple-50 to-white p-6 rounded-xl border border-purple-100">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center ml-3">
+                                    <i class="fab fa-bootstrap text-purple-600 text-xl"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800">استخدام Bootstrap</h3>
+                            </div>
+                            <p class="text-gray-700">تعلّم استخدام Bootstrap لبناء واجهات مستخدم متجاوبة وجذابة بسرعة
+                            </p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-green-50 to-white p-6 rounded-xl border border-green-100">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center ml-3">
+                                    <i class="fas fa-code text-green-600"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800">دمج التقنيات</h3>
+                            </div>
+                            <p class="text-gray-700">دمج JavaScript مع Bootstrap لإنشاء صفحات ويب تفاعلية ومهنية</p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-orange-50 to-white p-6 rounded-xl border border-orange-100">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center ml-3">
+                                    <i class="fas fa-project-diagram text-orange-600"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800">بناء مشروع عملي</h3>
+                            </div>
+                            <p class="text-gray-700">تطبيق المعرفة في مشروع عملي: قائمة مهام تفاعلية</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6 mt-12">
+                    <div class="bg-white p-6 rounded-xl shadow text-center">
+                        <div class="text-4xl text-blue-500 mb-4">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">JavaScript</h3>
+                        <p class="text-gray-600 text-sm">لغة برمجة للتفاعل مع المستخدم</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow text-center">
+                        <div class="text-4xl text-purple-500 mb-4">
+                            <i class="fab fa-bootstrap"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">Bootstrap</h3>
+                        <p class="text-gray-600 text-sm">إطار عمل CSS لتصميم سريع</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow text-center">
+                        <div class="text-4xl text-green-500 mb-4">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">نتيجة الدمج</h3>
+                        <p class="text-gray-600 text-sm">مواقع تفاعلية واحترافية</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشريحة 2: لماذا JavaScript و Bootstrap معًا؟ -->
+        <section id="slide2" class="slide bg-gradient-to-br from-indigo-50 to-blue-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-indigo-700">2</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">لماذا JavaScript و Bootstrap معًا؟</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center ml-4">
+                                <i class="fab fa-js text-2xl text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-800">JavaScript تضيف التفاعل</h3>
+                                <p class="text-gray-600">لغة برمجة جانب العميل</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>تغيير المحتوى ديناميكيًا بناءً على تفاعل المستخدم</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>الاستجابة للأحداث: نقرات، إدخال بيانات، تحميل الصفحة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>التحقق من صحة النماذج قبل الإرسال</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>التلاعب بـ DOM (هيكل صفحة الويب)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>إنشاء تجربة مستخدم غنية وديناميكية</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center ml-4">
+                                <i class="fab fa-bootstrap text-2xl text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-800">Bootstrap يسرّع التصميم</h3>
+                                <p class="text-gray-600">إطار عمل CSS (مع أجزاء من JS)</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>شبكة متجاوبة (Grid System) للتخطيط السريع</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>مكونات جاهزة: أزرار، نماذج، نوافذ منبثقة، بطاقات</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>فئات مساعدة (Utilities) للتحكم السريع في الأنماط</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>تصميم متجاوب تلقائيًا مع جميع أحجام الشاشات</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                <span>تقليل الوقت اللازم لتصميم واجهات احترافية</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-indigo-100 to-blue-100 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                        <i class="fas fa-sync-alt text-indigo-600 ml-2"></i>
+                        المزايا المشتركة
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-xl text-center">
+                            <div
+                                class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-bolt text-green-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-2">تطوير سريع</h4>
+                            <p class="text-gray-700 text-sm">بناء صفحات ويب كاملة في وقت قصير</p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl text-center">
+                            <div
+                                class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-users text-blue-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-2">تجربة مستخدم محسنة</h4>
+                            <p class="text-gray-700 text-sm">واجهات جذابة مع تفاعل سلس</p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl text-center">
+                            <div
+                                class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-mobile-alt text-purple-600"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-2">توافق كامل</h4>
+                            <p class="text-gray-700 text-sm">عمل ممتاز على جميع الأجهزة والمتصفحات</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 text-center">
+                    <div
+                        class="inline-flex items-center space-x-4 space-x-reverse bg-white px-6 py-4 rounded-full shadow-lg">
+                        <i class="fas fa-lightbulb text-yellow-500 text-2xl"></i>
+                        <p class="text-lg text-gray-800 font-medium">
+                            معًا تعطيان تجربة تعليمية سريعة: واجهة جذابة + تفاعل واضح — مما يزيد حافزية الطلاب
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشريحة 3: نظرة سريعة على JavaScript -->
+        <section id="slide3" class="slide bg-gradient-to-br from-teal-50 to-cyan-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-teal-700">3</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">نظرة سريعة على JavaScript (مفاهيم أساسية)</h2>
+                </div>
+
+                <div
+                    class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 mb-8 transition-colors duration-300">
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-question-circle text-teal-600 ml-2"></i>
+                            ما هي JavaScript؟
+                        </h3>
+                        <div class="bg-teal-50 p-6 rounded-xl border border-teal-200">
+                            <p class="text-lg text-gray-800">
+                                <span class="font-bold text-teal-700">لغة برمجة جانب العميل</span> (ويمكن جانب الخادم
+                                أيضاً) تُنفّذ داخل المتصفح وتتحكم في سلوك الصفحة. تُضيف التفاعل الديناميكي لصفحات الويب
+                                الثابتة.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-code text-blue-600 ml-2"></i>
+                            أين نضع كود JavaScript؟
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-blue-50 p-5 rounded-xl border border-blue-200">
+                                <h4 class="font-bold text-blue-800 mb-3">طريقة 1: ملف منفصل</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
+                                    <pre>&lt;script src="script.js"&gt;&lt;/script&gt;</pre>
+                                </div>
+                                <p class="text-gray-700 mt-3 text-sm">نربط الملف في أسفل body أو مع السمة defer في head
+                                </p>
+                            </div>
+
+                            <div class="bg-purple-50 p-5 rounded-xl border border-purple-200">
+                                <h4 class="font-bold text-purple-800 mb-3">طريقة 2: داخل الصفحة</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
+                                    <pre>&lt;script&gt;
+  // كود JavaScript هنا
+  console.log("مرحبًا بالعالم!");
+&lt;/script&gt;</pre>
+                                </div>
+                                <p class="text-gray-700 mt-3 text-sm">نضعه عادة في أسفل body قبل إغلاق الوسم</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-cogs text-green-600 ml-2"></i>
+                            مفاهيم أساسية في JavaScript
+                        </h3>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="bg-green-50 p-5 rounded-xl border border-green-200">
+                                <h4 class="font-bold text-green-800 mb-3">المتغيرات</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-sm">
+                                    <pre>let name = "أحمد";
+const age = 25;
+var oldWay = "طريقة قديمة";</pre>
+                                </div>
+                                <p class="text-gray-700 mt-3 text-sm">let للتغير، const للثوابت، var قديمة</p>
+                            </div>
+
+                            <div class="bg-yellow-50 p-5 rounded-xl border border-yellow-200">
+                                <h4 class="font-bold text-yellow-800 mb-3">أنواع البيانات</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-sm">
+                                    <pre>// String, Number, Boolean
+// Array, Object
+let items = ["كتاب", "قلم", "دفتر"];
+let person = {name: "محمد", age: 30};</pre>
+                                </div>
+                                <p class="text-gray-700 mt-3 text-sm">بيانات بسيطة ومركبة لتخزين المعلومات</p>
+                            </div>
+
+                            <div class="bg-red-50 p-5 rounded-xl border border-red-200">
+                                <h4 class="font-bold text-red-800 mb-3">الدوال (Functions)</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-sm">
+                                    <pre>function greet(name) {
+  return "مرحبًا " + name;
+}
+// أو
+const greet = (name) => {
+  return `مرحبًا ${name}`;
+}</pre>
+                                </div>
+                                <p class="text-gray-700 mt-3 text-sm">كتل من التعليمات البرمجية قابلة لإعادة الاستخدام
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-cyan-100 to-teal-100 rounded-2xl p-6">
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">مفاهيم إضافية مهمة</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white p-4 rounded-lg text-center">
+                            <div
+                                class="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-sitemap text-cyan-600"></i>
+                            </div>
+                            <p class="font-medium text-gray-800 text-sm">تعامل مع DOM</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-center">
+                            <div
+                                class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-mouse-pointer text-teal-600"></i>
+                            </div>
+                            <p class="font-medium text-gray-800 text-sm">الأحداث (Events)</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-center">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-eye text-blue-600"></i>
+                            </div>
+                            <p class="font-medium text-gray-800 text-sm">التحكم في العرض</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-center">
+                            <div
+                                class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-clipboard-check text-purple-600"></i>
+                            </div>
+                            <p class="font-medium text-gray-800 text-sm">التحقق من النماذج</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشريحة 4: أول تفاعل بـ JavaScript -->
+        <section id="slide4" class="slide bg-gradient-to-br from-orange-50 to-amber-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-orange-700">4</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">مثال عملي بسيط — أول تفاعل بالـ JavaScript</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">ملف HTML (index.html)</h3>
+                        <div class="code-block bg-gray-900 text-gray-100 p-6 rounded-xl overflow-x-auto text-sm">
+                            <pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ar"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8" /&gt;
+  &lt;title&gt;تجربة JavaScript بسيطة&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1 id="title"&gt;مرحبًا بك!&lt;/h1&gt;
+  &lt;button id="btn"&gt;اضغط هنا&lt;/button&gt;
+  
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">ملف JavaScript (script.js)</h3>
+                        <div class="code-block bg-gray-900 text-gray-100 p-6 rounded-xl overflow-x-auto text-sm">
+                            <pre>// 1. الحصول على العناصر من الصفحة
+const btn = document.getElementById('btn');
+const title = document.getElementById('title');
+
+// 2. إضافة مستمع حدث (Event Listener) للزر
+btn.addEventListener('click', () => {
+  // 3. تغيير نص العنوان عند النقر
+  title.innerText = 'شكراً لزيارتك — تم النقر!';
+  
+  // 4. تعطيل الزر بعد النقر
+  btn.disabled = true;
+  
+  // 5. تغيير نص الزر
+  btn.innerText = 'تم النقر بالفعل';
+});</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="live-demo mb-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">تجربة مباشرة</h3>
+                    <div class="text-center">
+                        <h1 id="demoTitle" class="text-3xl font-bold text-gray-800 mb-8">مرحبًا بك!</h1>
+                        <button id="demoBtn"
+                            class="btn-demo px-6 py-3 bg-blue-600 text-white rounded-lg font-medium text-lg">
+                            اضغط هنا
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 transition-colors duration-300">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-play-circle text-orange-600 ml-2"></i>
+                        ماذا يحدث في الكود؟
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-orange-50 p-5 rounded-xl border border-orange-200">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center ml-2">
+                                    <span class="font-bold text-orange-700">1</span>
+                                </div>
+                                <h4 class="font-bold text-gray-800">الحصول على العناصر</h4>
+                            </div>
+                            <p class="text-gray-700 text-sm">document.getElementById يحصل على العناصر من صفحة HTML
+                                باستخدام المعرف id</p>
+                        </div>
+
+                        <div class="bg-yellow-50 p-5 rounded-xl border border-yellow-200">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center ml-2">
+                                    <span class="font-bold text-yellow-700">2</span>
+                                </div>
+                                <h4 class="font-bold text-gray-800">إضافة مستمع حدث</h4>
+                            </div>
+                            <p class="text-gray-700 text-sm">addEventListener يربط دالة (function) بحدث معين (click هنا)
+                            </p>
+                        </div>
+
+                        <div class="bg-green-50 p-5 rounded-xl border border-green-200">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center ml-2">
+                                    <span class="font-bold text-green-700">3</span>
+                                </div>
+                                <h4 class="font-bold text-gray-800">تغيير المحتوى</h4>
+                            </div>
+                            <p class="text-gray-700 text-sm">innerText تغير النص الظاهر للعنصر، disabled تعطل الزر</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // تفعيل الزر في العرض التوضيحي
+                document.addEventListener('DOMContentLoaded', function () {
+                    const demoBtn = document.getElementById('demoBtn');
+                    const demoTitle = document.getElementById('demoTitle');
+
+                    if (demoBtn && demoTitle) {
+                        demoBtn.addEventListener('click', function () {
+                            demoTitle.innerText = 'شكراً لزيارتك — تم النقر!';
+                            demoBtn.disabled = true;
+                            demoBtn.innerText = 'تم النقر بالفعل';
+                            demoBtn.classList.remove('bg-blue-600');
+                            demoBtn.classList.add('bg-gray-400');
+                        });
+                    }
+                });
+            </script>
+        </section>
+
+        <!-- الشريحة 5: مقدمة إلى Bootstrap -->
+        <section id="slide5" class="slide bg-gradient-to-br from-purple-50 to-pink-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-purple-700">5</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">مقدمة إلى Bootstrap (الإصدار الحديث 5.x)</h2>
+                </div>
+
+                <div
+                    class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 mb-8 transition-colors duration-300">
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-question-circle text-purple-600 ml-2"></i>
+                            ما هو Bootstrap؟
+                        </h3>
+                        <div class="bg-purple-50 p-6 rounded-xl border border-purple-200">
+                            <p class="text-lg text-gray-800">
+                                <span class="font-bold text-purple-700">إطار عمل CSS</span> (مع أجزاء من JS) يجعل بناء
+                                واجهات متجاوبة سريعًا عبر نظام شبكة (Grid) ومكونات جاهزة. طورته Twitter وأصبح معيارًا
+                                للتصميم السريع والمتجاور لمواقع الويب.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-download text-blue-600 ml-2"></i>
+                            كيف تضيف Bootstrap لصفحتك؟
+                        </h3>
+                        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                            <p class="text-gray-800 mb-4">أبسط طريقة عبر CDN (في head):</p>
+                            <div
+                                class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm mb-4">
+                                <pre>&lt;!-- CSS --&gt;
+&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+
+&lt;!-- JS --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer&gt;&lt;/script&gt;</pre>
+                            </div>
+                            <p class="text-gray-800 text-sm">
+                                <i class="fas fa-info-circle text-blue-600 ml-1"></i>
+                                في بيئة تعليمية، يمكن استخدام النسخ المحلية أيضاً عن طريق التحميل من الموقع الرسمي.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-th-large text-green-600 ml-2"></i>
+                            نظام الشبكة (Grid System)
+                        </h3>
+                        <div class="bg-green-50 p-6 rounded-xl border border-green-200">
+                            <p class="text-gray-800 mb-4">أساس Bootstrap للتصميم المتجاوب:</p>
+                            <div
+                                class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm mb-4">
+                                <pre>&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-md-4"&gt;عمود 1&lt;/div&gt;
+    &lt;div class="col-md-4"&gt;عمود 2&lt;/div&gt;
+    &lt;div class="col-md-4"&gt;عمود 3&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                                <div class="bg-white p-4 rounded-lg text-center border border-green-300">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-mobile-alt text-green-600"></i>
+                                    </div>
+                                    <p class="font-medium text-gray-800 text-sm">col-md-4</p>
+                                    <p class="text-gray-600 text-xs">عرض 4/12 على الشاشات المتوسطة فأكبر</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg text-center border border-green-300">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-tablet-alt text-blue-600"></i>
+                                    </div>
+                                    <p class="font-medium text-gray-800 text-sm">col-sm-6</p>
+                                    <p class="text-gray-600 text-xs">عرض 6/12 على الشاشات الصغيرة فأكبر</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg text-center border border-green-300">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-2">
+                                        <i class="fas fa-desktop text-purple-600"></i>
+                                    </div>
+                                    <p class="font-medium text-gray-800 text-sm">col-12</p>
+                                    <p class="text-gray-600 text-xs">عرض كامل على جميع الشاشات</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-6">
+                    <h4 class="text-xl font-bold text-gray-800 mb-6 text-center">مكونات Bootstrap الشائعة</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-2">
+                                <span class="font-bold text-blue-600">Btn</span>
+                            </div>
+                            <p class="font-medium text-gray-800 text-sm">الأزرار</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+                            <div
+                                class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-2">
+                                <span class="font-bold text-purple-600">Card</span>
+                            </div>
+                            <p class="font-medium text-gray-800 text-sm">البطاقات</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+                            <div
+                                class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-2">
+                                <span class="font-bold text-green-600">Form</span>
+                            </div>
+                            <p class="font-medium text-gray-800 text-sm">النماذج</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+                            <div
+                                class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-2">
+                                <span class="font-bold text-yellow-600">Modal</span>
+                            </div>
+                            <p class="font-medium text-gray-800 text-sm">النوافذ</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg text-center shadow-sm">
+                            <div
+                                class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-2">
+                                <span class="font-bold text-red-600">Nav</span>
+                            </div>
+                            <p class="font-medium text-gray-800 text-sm">التنقل</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشريحة 6: مثال تطبيقي متكامل -->
+        <section id="slide6" class="slide bg-gradient-to-br from-blue-50 to-cyan-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-blue-700">6</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">مثال تطبيقي: صفحة صغيرة بـ Bootstrap + JavaScript</h2>
+                </div>
+
+                <div
+                    class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 mb-8 transition-colors duration-300">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">متجر تجريبي - عرض منتج</h3>
+
+                    <div class="live-demo mb-8">
+                        <!-- رأس الصفحة -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="h3">متجر تجريبي</h2>
+                            <div class="d-flex align-items-center">
+                                <span class="me-2">السلة:</span>
+                                <span id="cartCount" class="badge bg-primary fs-6">0</span>
+                            </div>
+                        </div>
+
+                        <!-- بطاقة المنتج -->
+                        <div class="row justify-content-center">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card shadow-sm">
+                                    <img src="https://via.placeholder.com/400x200/4F46E5/FFFFFF?text=قلم+تصميم+احترافي"
+                                        class="card-img-top" alt="صورة المنتج"
+                                        style="height: 200px; object-fit: cover;">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">قلم تصميم احترافي</h5>
+                                        <p class="card-text">قلم احترافي للرسم الرقمي مع دقة عالية وحساسية للضغط.</p>
+                                        <div class="d-flex justify-content-center">
+                                            <button id="detailsBtn" class="btn btn-outline-secondary me-2"
+                                                data-bs-toggle="modal" data-bs-target="#detailsModal">
+                                                عرض التفاصيل
+                                            </button>
+                                            <button id="addBtn" class="btn btn-primary">
+                                                أضف إلى السلة
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailsModalLabel">تفاصيل المنتج</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="إغلاق"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>هذا القلم مصنوع من مواد عالية الجودة ويعمل مع الأجهزة اللوحية وأجهزة الكمبيوتر.
+                                    </p>
+                                    <ul>
+                                        <li>دقة: 8192 مستوى للضغط</li>
+                                        <li>متوافق مع: Windows, macOS, Android</li>
+                                        <li>يأتي مع 10 رؤوس قابلة للاستبدال</li>
+                                        <li>ضمان: 3 سنوات</li>
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="buyNow" type="button" class="btn btn-success">شراء الآن</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">إغلاق</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <h4 class="text-xl font-bold text-gray-800 mb-4">كود JavaScript المستخدم</h4>
+                        <div class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
+                            <pre>// الانتظار حتى يتم تحميل DOM بالكامل
+document.addEventListener('DOMContentLoaded', () => {
+  // الحصول على العناصر
+  const addBtn = document.getElementById('addBtn');
+  const cartCount = document.getElementById('cartCount');
+  const buyNow = document.getElementById('buyNow');
+  
+  // حدث النقر على زر "أضف إلى السلة"
+  addBtn.addEventListener('click', () => {
+    // زيادة عداد السلة بمقدار 1
+    cartCount.innerText = parseInt(cartCount.innerText) + 1;
+    
+    // تغيير مؤقت للزر للإشارة إلى النجاح
+    const originalText = addBtn.innerText;
+    addBtn.innerText = 'تمت الإضافة!';
+    addBtn.classList.remove('btn-primary');
+    addBtn.classList.add('btn-success');
+    
+    // العودة إلى الحالة الأصلية بعد ثانيتين
+    setTimeout(() => {
+      addBtn.innerText = originalText;
+      addBtn.classList.remove('btn-success');
+      addBtn.classList.add('btn-primary');
+    }, 2000);
+  });
+  
+  // حدث النقر على زر "شراء الآن" في المودال
+  buyNow.addEventListener('click', () => {
+    // عرض رسالة تأكيد
+    alert('شكرًا! تم البدء بعملية الشراء (توضيحي).');
+    
+    // إغلاق المودال برمجياً
+    const modal = bootstrap.Modal.getInstance(document.getElementById('detailsModal'));
+    modal.hide();
+  });
+});</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow text-center">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-th text-green-600"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">تعلم من المثال</h4>
+                        <p class="text-gray-700 text-sm">كيفية استخدام شبكة و card من Bootstrap</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow text-center">
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-window-restore text-blue-600"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">تعلم من المثال</h4>
+                        <p class="text-gray-700 text-sm">كيفية تكوين Modal من Bootstrap</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow text-center">
+                        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-mouse-pointer text-purple-600"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">تعلم من المثال</h4>
+                        <p class="text-gray-700 text-sm">ربط أزرار بـ JavaScript لتحديث الواجهة</p>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // تفعيل المثال التوضيحي
+                document.addEventListener('DOMContentLoaded', function () {
+                    const addBtn = document.getElementById('addBtn');
+                    const cartCount = document.getElementById('cartCount');
+                    const buyNow = document.getElementById('buyNow');
+
+                    if (addBtn && cartCount) {
+                        addBtn.addEventListener('click', function () {
+                            cartCount.innerText = parseInt(cartCount.innerText) + 1;
+
+                            const originalText = addBtn.innerText;
+                            addBtn.innerText = 'تمت الإضافة!';
+                            addBtn.classList.remove('btn-primary');
+                            addBtn.classList.add('btn-success');
+
+                            setTimeout(() => {
+                                addBtn.innerText = originalText;
+                                addBtn.classList.remove('btn-success');
+                                addBtn.classList.add('btn-primary');
+                            }, 2000);
+                        });
+                    }
+
+                    if (buyNow) {
+                        buyNow.addEventListener('click', function () {
+                            alert('شكرًا! تم البدء بعملية الشراء (توضيحي).');
+
+                            const modalElement = document.getElementById('detailsModal');
+                            if (modalElement) {
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                }
+                            }
+                        });
+                    }
+                });
+            </script>
+        </section>
+
+        <!-- الشريحة 7: عناصر مهمة للتعلم -->
+        <section id="slide7" class="slide bg-gradient-to-br from-emerald-50 to-green-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-emerald-700">7</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">عناصر JavaScript + Bootstrap التي يجب إيضاحها للطلاب
+                        عمليًا</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-sitemap text-blue-600 ml-2"></i>
+                            1. DOM Traversal & Manipulation
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-blue-800 mb-2">الوصول إلى العناصر</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs">
+                                    <pre>// الحصول على عنصر بواسطة id
+const element = document.getElementById('myId');
+
+// الحصول على العنصر الأول بمحدد CSS
+const firstElement = document.querySelector('.myClass');
+
+// الحصول على جميع العناصر بمحدد CSS
+const allElements = document.querySelectorAll('.myClass');</pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-green-800 mb-2">تعديل العناصر</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs">
+                                    <pre>// تغيير النص
+element.textContent = 'نص جديد';
+
+// تغيير HTML
+element.innerHTML = '&lt;strong&gt;نص عريض&lt;/strong&gt;';
+
+// إضافة/إزالة/تبديل CSS classes
+element.classList.add('active');
+element.classList.remove('hidden');
+element.classList.toggle('visible');</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-mouse-pointer text-purple-600 ml-2"></i>
+                            2. التعامل مع الأحداث (Events)
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-purple-800 mb-2">ربط الأحداث</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs">
+                                    <pre>// حدث النقر
+button.addEventListener('click', (event) => {
+  console.log('تم النقر!');
+});
+
+// حدث إرسال نموذج
+form.addEventListener('submit', (event) => {
+  event.preventDefault(); // منع الإرسال الافتراضي
+  // التحقق من النموذج هنا
+});
+
+// حدث إدخال نص
+input.addEventListener('input', (event) => {
+  console.log('القيمة الجديدة:', event.target.value);
+});</pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-yellow-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-yellow-800 mb-2">أحداث شائعة</h4>
+                                <ul class="list-disc pr-6 text-gray-700 space-y-1 text-sm">
+                                    <li><code>click</code> - نقر الماوس</li>
+                                    <li><code>submit</code> - إرسال نموذج</li>
+                                    <li><code>input</code> - تغيير قيمة حقل إدخال</li>
+                                    <li><code>change</code> - تغيير قيمة عنصر (select, checkbox)</li>
+                                    <li><code>load</code> - انتهاء تحميل الصفحة أو صورة</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fab fa-bootstrap text-indigo-600 ml-2"></i>
+                            3. استخدام مكونات Bootstrap عبر JS
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-indigo-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-indigo-800 mb-2">التحكم في المودال برمجيًا</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs">
+                                    <pre>// إنشاء مثيل للمودال
+const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+
+// إظهار المودال
+myModal.show();
+
+// إخفاء المودال
+myModal.hide();
+
+// التبديل (إظهار/إخفاء)
+myModal.toggle();</pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-pink-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-pink-800 mb-2">مكونات Bootstrap الأخرى</h4>
+                                <ul class="list-disc pr-6 text-gray-700 space-y-1 text-sm">
+                                    <li><strong>Collapse</strong> - للعناصر القابلة للطي</li>
+                                    <li><strong>Toast</strong> - للإشعارات العابرة</li>
+                                    <li><strong>Tooltip</strong> - للتلميحات (تحتاج تهيئة JS)</li>
+                                    <li><strong>Carousel</strong> - لعرض الشرائح الدوارة</li>
+                                    <li><strong>Dropdown</strong> - للقوائم المنسدلة</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-clipboard-check text-red-600 ml-2"></i>
+                            4. التحقق من النماذج (Form Validation)
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-red-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-red-800 mb-2">التحقق باستخدام JavaScript</h4>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs">
+                                    <pre>form.addEventListener('submit', (event) => {
+  event.preventDefault(); // منع الإرسال
+  
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  
+  // التحقق من البريد الإلكتروني
+  if (!email.includes('@')) {
+    showError('البريد الإلكتروني غير صالح');
+    return;
+  }
+  
+  // التحقق من كلمة المرور
+  if (password.length < 6) {
+    showError('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+    return;
+  }
+  
+  // إذا كان كل شيء صحيحاً
+  form.submit(); // إرسال النموذج
+});
+
+function showError(message) {
+  // عرض رسالة الخطأ في الـ DOM
+  const errorDiv = document.getElementById('error');
+  errorDiv.textContent = message;
+  errorDiv.classList.remove('d-none');
+}</pre>
+                                </div>
+                            </div>
+
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-orange-800 mb-2">التحقق باستخدام Bootstrap</h4>
+                                <p class="text-gray-700 text-sm">يوفر Bootstrap فئات CSS مبنية للتحقق من النماذج:</p>
+                                <div
+                                    class="code-block bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-xs mt-2">
+                                    <pre>&lt;div class="mb-3"&gt;
+  &lt;label for="email" class="form-label"&gt;البريد الإلكتروني&lt;/label&gt;
+  &lt;input type="email" class="form-control is-invalid" id="email"&gt;
+  &lt;div class="invalid-feedback"&gt;
+    يرجى إدخال بريد إلكتروني صالح.
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-emerald-100 to-green-100 rounded-2xl p-6 text-center">
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">المهارات العملية المكتسبة</h4>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <span
+                            class="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-800 shadow-sm">التعامل
+                            مع DOM</span>
+                        <span
+                            class="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-800 shadow-sm">الاستجابة
+                            للأحداث</span>
+                        <span
+                            class="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-800 shadow-sm">التفاعل
+                            مع Bootstrap</span>
+                        <span class="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-800 shadow-sm">التحقق
+                            من النماذج</span>
+                        <span class="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-800 shadow-sm">بناء
+                            واجهات تفاعلية</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشريحة 8: مشروع قائمة المهام -->
+        <section id="slide8" class="slide bg-gradient-to-br from-amber-50 to-orange-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-amber-700">8</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">مشروع مصغر: تطبيق قائمة مهام (To-Do List)</h2>
+                </div>
+
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 mb-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">تطبيق لإدارة المهام اليومية</h3>
+
+                    <div class="live-demo mb-8">
+                        <div class="container">
+                            <div class="text-center mb-5">
+                                <h2 class="h2 mb-3">📝 قائمة المهام</h2>
+                                <p class="text-muted">أضف مهامك اليومية وقم بإدارتها</p>
+                            </div>
+
+                            <div class="row justify-content-center">
+                                <div class="col-md-8 col-lg-6">
+                                    <!-- نموذج إضافة مهمة -->
+                                    <div class="input-group mb-4">
+                                        <input type="text" id="taskInput" class="form-control form-control-lg"
+                                            placeholder="أدخل مهمة جديدة...">
+                                        <button id="addTaskBtn" class="btn btn-primary btn-lg">
+                                            <i class="fas fa-plus me-2"></i>إضافة
+                                        </button>
+                                    </div>
+
+                                    <!-- قائمة المهام -->
+                                    <div id="tasksContainer" class="border rounded p-3 bg-white">
+                                        <h5 class="mb-3">المهام (<span id="taskCount">0</span>)</h5>
+                                        <div id="tasksList" class="mb-3">
+                                            <!-- المهام ستظهر هنا -->
+                                            <div class="alert alert-info text-center">
+                                                لا توجد مهام حالياً. أضف مهمة جديدة!
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between">
+                                            <button id="clearCompletedBtn" class="btn btn-outline-secondary btn-sm"
+                                                disabled>
+                                                <i class="fas fa-trash-alt me-1"></i>حذف المكتمل
+                                            </button>
+                                            <button id="clearAllBtn" class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-broom me-1"></i>حذف الكل
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-4">الهيكل الأساسي (HTML)</h4>
+                            <div class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
+                                <pre>&lt;div class="container"&gt;
+  &lt;h2&gt;قائمة المهام&lt;/h2&gt;
+  
+  &lt;!-- نموذج الإضافة --&gt;
+  &lt;div class="input-group mb-3"&gt;
+    &lt;input type="text" id="taskInput" 
+           class="form-control" 
+           placeholder="أدخل مهمة جديدة..."&gt;
+    &lt;button id="addTaskBtn" class="btn btn-primary"&gt;
+      إضافة
+    &lt;/button&gt;
+  &lt;/div&gt;
+  
+  &lt;!-- قائمة المهام --&gt;
+  &lt;div id="tasksContainer"&gt;
+    &lt;h5&gt;المهام (&lt;span id="taskCount"&gt;0&lt;/span&gt;)&lt;/h5&gt;
+    &lt;div id="tasksList"&gt;&lt;/div&gt;
+    
+    &lt;div class="d-flex justify-content-between"&gt;
+      &lt;button id="clearCompletedBtn" 
+              class="btn btn-outline-secondary"&gt;
+        حذف المكتمل
+      &lt;/button&gt;
+      &lt;button id="clearAllBtn" 
+              class="btn btn-outline-danger"&gt;
+        حذف الكل
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-4">المنطق الأساسي (JavaScript)</h4>
+                            <div class="code-block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
+                                <pre>// مصفوفة لتخزين المهام
+let tasks = [];
+
+// إضافة مهمة جديدة
+function addTask(taskText) {
+  const task = {
+    id: Date.now(), // معرف فريد
+    text: taskText,
+    completed: false,
+    date: new Date().toLocaleDateString('ar-SA')
+  };
+  
+  tasks.push(task);
+  renderTasks();
+  saveTasksToLocalStorage();
+}
+
+// عرض المهام
+function renderTasks() {
+  const tasksList = document.getElementById('tasksList');
+  const taskCount = document.getElementById('taskCount');
+  
+  if (tasks.length === 0) {
+    tasksList.innerHTML = '&lt;div class="alert alert-info"&gt;لا توجد مهام&lt;/div&gt;';
+    taskCount.textContent = '0';
+    return;
+  }
+  
+  let html = '';
+  tasks.forEach(task => {
+    html += `
+      &lt;div class="task-item d-flex justify-content-between 
+                   align-items-center p-2 mb-2 border rounded"&gt;
+        &lt;div class="form-check"&gt;
+          &lt;input type="checkbox" class="form-check-input" 
+                 ${task.completed ? 'checked' : ''}
+                 onchange="toggleTask(${task.id})"&gt;
+          &lt;label class="form-check-label ${task.completed ? 'text-decoration-line-through text-muted' : ''}"&gt;
+            ${task.text}
+          &lt;/label&gt;
+        &lt;/div&gt;
+        &lt;button class="btn btn-sm btn-outline-danger" 
+                onclick="deleteTask(${task.id})"&gt;
+          &lt;i class="fas fa-times"&gt;&lt;/i&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    `;
+  });
+  
+  tasksList.innerHTML = html;
+  taskCount.textContent = tasks.length;
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow text-center">
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-list-check text-blue-600"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">الميزات</h4>
+                        <ul class="text-gray-700 text-sm text-right space-y-1">
+                            <li>إضافة مهام جديدة</li>
+                            <li>تحديد المهام المكتملة</li>
+                            <li>حذف المهام الفردية</li>
+                            <li>حذف جميع المهام</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow text-center">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-code text-green-600"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">المفاهيم المطبقة</h4>
+                        <ul class="text-gray-700 text-sm text-right space-y-1">
+                            <li>التعامل مع DOM</li>
+                            <li>إدارة الأحداث</li>
+                            <li>التلاعب بالمصفوفات</li>
+                            <li>التخزين المحلي (LocalStorage)</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow text-center">
+                        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-bootstrap text-purple-600"></i>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">مكونات Bootstrap</h4>
+                        <ul class="text-gray-700 text-sm text-right space-y-1">
+                            <li>النماذج والأزرار</li>
+                            <li>التنبيهات (Alerts)</li>
+                            <li>المرونة (Flexbox)</li>
+                            <li>التنسيقات المساعدة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // تطبيق قائمة المهام
+                document.addEventListener('DOMContentLoaded', function () {
+                    let tasks = [];
+
+                    // عناصر DOM
+                    const taskInput = document.getElementById('taskInput');
+                    const addTaskBtn = document.getElementById('addTaskBtn');
+                    const tasksList = document.getElementById('tasksList');
+                    const taskCount = document.getElementById('taskCount');
+                    const clearCompletedBtn = document.getElementById('clearCompletedBtn');
+                    const clearAllBtn = document.getElementById('clearAllBtn');
+
+                    // تحميل المهام من التخزين المحلي (لو كان موجوداً)
+                    function loadTasksFromStorage() {
+                        const savedTasks = localStorage.getItem('todoTasks');
+                        if (savedTasks) {
+                            tasks = JSON.parse(savedTasks);
+                            renderTasks();
+                        }
+                    }
+
+                    // حفظ المهام في التخزين المحلي
+                    function saveTasksToStorage() {
+                        localStorage.setItem('todoTasks', JSON.stringify(tasks));
+                    }
+
+                    // إضافة مهمة جديدة
+                    function addTask() {
+                        const taskText = taskInput.value.trim();
+                        if (taskText === '') {
+                            alert('يرجى إدخال نص المهمة');
+                            return;
+                        }
+
+                        const task = {
+                            id: Date.now(),
+                            text: taskText,
+                            completed: false,
+                            date: new Date().toLocaleDateString('ar-SA')
+                        };
+
+                        tasks.push(task);
+                        taskInput.value = '';
+                        renderTasks();
+                        saveTasksToStorage();
+                    }
+
+                    // تغيير حالة المهمة (مكتمل/غير مكتمل)
+                    function toggleTask(id) {
+                        tasks = tasks.map(task => {
+                            if (task.id === id) {
+                                return { ...task, completed: !task.completed };
+                            }
+                            return task;
+                        });
+                        renderTasks();
+                        saveTasksToStorage();
+                    }
+
+                    // حذف مهمة
+                    function deleteTask(id) {
+                        if (confirm('هل أنت متأكد من حذف هذه المهمة؟')) {
+                            tasks = tasks.filter(task => task.id !== id);
+                            renderTasks();
+                            saveTasksToStorage();
+                        }
+                    }
+
+                    // حذف المهام المكتملة
+                    function clearCompletedTasks() {
+                        if (confirm('هل أنت متأكد من حذف جميع المهام المكتملة؟')) {
+                            tasks = tasks.filter(task => !task.completed);
+                            renderTasks();
+                            saveTasksToStorage();
+                        }
+                    }
+
+                    // حذف جميع المهام
+                    function clearAllTasks() {
+                        if (confirm('هل أنت متأكد من حذف جميع المهام؟')) {
+                            tasks = [];
+                            renderTasks();
+                            saveTasksToStorage();
+                        }
+                    }
+
+                    // عرض المهام
+                    function renderTasks() {
+                        if (tasks.length === 0) {
+                            tasksList.innerHTML = '<div class="alert alert-info text-center">لا توجد مهام حالياً. أضف مهمة جديدة!</div>';
+                            taskCount.textContent = '0';
+                            clearCompletedBtn.disabled = true;
+                            return;
+                        }
+
+                        let html = '';
+                        let completedCount = 0;
+
+                        tasks.forEach(task => {
+                            if (task.completed) completedCount++;
+
+                            html += `
+                                <div class="task-item d-flex justify-content-between align-items-center p-2 mb-2 border rounded ${task.completed ? 'bg-light' : ''}">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})" id="task-${task.id}">
+                                        <label class="form-check-label ${task.completed ? 'text-decoration-line-through text-muted' : ''}" for="task-${task.id}">
+                                            ${task.text}
+                                            <small class="text-muted d-block">${task.date}</small>
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteTask(${task.id})">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            `;
+                        });
+
+                        tasksList.innerHTML = html;
+                        taskCount.textContent = tasks.length;
+                        clearCompletedBtn.disabled = completedCount === 0;
+                    }
+
+                    // إضافة الوظائف إلى النطاق العام لاستخدامها في onclick
+                    window.toggleTask = toggleTask;
+                    window.deleteTask = deleteTask;
+
+                    // أحداث المستخدم
+                    addTaskBtn.addEventListener('click', addTask);
+                    taskInput.addEventListener('keypress', function (e) {
+                        if (e.key === 'Enter') {
+                            addTask();
+                        }
+                    });
+
+                    clearCompletedBtn.addEventListener('click', clearCompletedTasks);
+                    clearAllBtn.addEventListener('click', clearAllTasks);
+
+                    // تحميل المهام عند بدء التشغيل
+                    loadTasksFromStorage();
+                });
+            </script>
+        </section>
+
+        <!-- الشريحة 9: مخاطر وسلبيات -->
+        <section id="slide9" class="slide bg-gradient-to-br from-rose-50 to-pink-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-rose-700">9</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">مخاطر وسلبيات (تنبيهات)</h2>
+                </div>
+
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 mb-8">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                                <i class="fab fa-js text-yellow-500 ml-2"></i>
+                                مخاطر JavaScript
+                            </h3>
+
+                            <div class="space-y-6">
+                                <div class="bg-yellow-50 p-5 rounded-xl border border-yellow-200">
+                                    <h4 class="font-bold text-yellow-800 mb-3 flex items-center">
+                                        <i class="fas fa-tachometer-alt text-yellow-600 ml-2"></i>
+                                        أداء الصفحة
+                                    </h4>
+                                    <p class="text-gray-700">
+                                        كود JavaScript غير المحسّن قد يبطئ تحميل الصفحة وتفاعلها. الاستخدام المفرط
+                                        للمكتبات قد يزيد وقت التحميل.
+                                    </p>
+                                </div>
+
+                                <div class="bg-red-50 p-5 rounded-xl border border-red-200">
+                                    <h4 class="font-bold text-red-800 mb-3 flex items-center">
+                                        <i class="fas fa-shield-alt text-red-600 ml-2"></i>
+                                        الأمان
+                                    </h4>
+                                    <p class="text-gray-700">
+                                        JavaScript يعمل على جهاز المستخدم، مما يجعل التحقق من المدخلات على جانب العميل
+                                        غير كافٍ. يجب دائماً التحقق على الخادم أيضاً.
+                                    </p>
+                                </div>
+
+                                <div class="bg-blue-50 p-5 rounded-xl border border-blue-200">
+                                    <h4 class="font-bold text-blue-800 mb-3 flex items-center">
+                                        <i class="fas fa-eye-slash text-blue-600 ml-2"></i>
+                                        إمكانية الوصول
+                                    </h4>
+                                    <p class="text-gray-700">
+                                        الاعتماد الكلي على JavaScript قد يجعل الموقع غير قابل للاستخدام لمن لديهم إعاقات
+                                        أو يستخدمون تقنيات مساعدة قديمة.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                                <i class="fab fa-bootstrap text-purple-500 ml-2"></i>
+                                سلبيات Bootstrap
+                            </h3>
+
+                            <div class="space-y-6">
+                                <div class="bg-purple-50 p-5 rounded-xl border border-purple-200">
+                                    <h4 class="font-bold text-purple-800 mb-3 flex items-center">
+                                        <i class="fas fa-clone text-purple-600 ml-2"></i>
+                                        التشابه
+                                    </h4>
+                                    <p class="text-gray-700">
+                                        الاعتماد الكلي على Bootstrap قد يجعل المواقع متشابهة. يجب تعلم CSS الأساسي
+                                        للتميز وإنشاء تصاميم فريدة.
+                                    </p>
+                                </div>
+
+                                <div class="bg-green-50 p-5 rounded-xl border border-green-200">
+                                    <h4 class="font-bold text-green-800 mb-3 flex items-center">
+                                        <i class="fas fa-weight text-green-600 ml-2"></i>
+                                        حجم الملفات
+                                    </h4>
+                                    <p class="text-gray-700">
+                                        ملفات Bootstrap الكبيرة قد تزيد وقت تحميل الصفحة. يمكن استخدام أدوات مثل
+                                        PurgeCSS لإزالة الأجزاء غير المستخدمة.
+                                    </p>
+                                </div>
+
+                                <div class="bg-orange-50 p-5 rounded-xl border border-orange-200">
+                                    <h4 class="font-bold text-orange-800 mb-3 flex items-center">
+                                        <i class="fas fa-graduation-cap text-orange-600 ml-2"></i>
+                                        الاعتماد المفرط
+                                    </h4>
+                                    <p class="text-gray-700">
+                                        قد يعيق Bootstrap تعلم CSS الأساسي. المطورون المبتدئون قد يعتمدون عليه دون فهم
+                                        كيفية عمل CSS فعلياً.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-rose-100 to-pink-100 rounded-2xl p-6">
+                    <h4 class="text-xl font-bold text-gray-800 mb-6 text-center">نصائح وتوصيات</h4>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-5 rounded-xl">
+                            <h5 class="font-bold text-gray-800 mb-3 flex items-center">
+                                <i class="fas fa-lightbulb text-green-600 ml-2"></i>
+                                لتحسين أداء JavaScript
+                            </h5>
+                            <ul class="list-disc pr-6 text-gray-700 space-y-2 text-sm">
+                                <li>استخدم defer أو async لتحميل ملفات JS</li>
+                                <li>قلل من المكتبات الخارجية</li>
+                                <li>حسن الكود وتجنب الحلقات غير الضرورية</li>
+                                <li>استخدم التخزين المؤقت (Caching)</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl">
+                            <h5 class="font-bold text-gray-800 mb-3 flex items-center">
+                                <i class="fas fa-lightbulb text-blue-600 ml-2"></i>
+                                لتحسين استخدام Bootstrap
+                            </h5>
+                            <ul class="list-disc pr-6 text-gray-700 space-y-2 text-sm">
+                                <li>تعلم CSS الأساسي أولاً</li>
+                                <li>خصص Bootstrap بدلاً من استخدامه كما هو</li>
+                                <li>استخدم الإصدار المخصص (Custom Build)</li>
+                                <li>اجمع بين Bootstrap و CSS مكتوب يدوياً</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 text-center">
+                    <div
+                        class="inline-flex items-center space-x-4 space-x-reverse bg-white px-6 py-4 rounded-full shadow-lg">
+                        <i class="fas fa-balance-scale text-gray-600 text-2xl"></i>
+                        <p class="text-lg text-gray-800 font-medium">
+                            التوازن مفتاح النجاح: استخدم JavaScript و Bootstrap كأدوات مساعدة، لا كبديل كامل للمعرفة
+                            الأساسية
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشريحة 10: خاتمة وتلخيص -->
+        <section id="slide10" class="slide bg-gradient-to-br from-violet-50 to-indigo-50">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-violet-700">10</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">خاتمة وتلخيص</h2>
+                </div>
+
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 mb-10">
+                    <div class="text-center mb-10">
+                        <div class="inline-block p-4 bg-gradient-to-r from-violet-100 to-indigo-100 rounded-full mb-6">
+                            <i class="fas fa-flag-checkered text-4xl text-violet-600"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-6">ما تعلمناه اليوم</h3>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 mb-10">
+                        <div
+                            class="bg-gradient-to-br from-violet-50 to-white p-6 rounded-2xl border border-violet-200 shadow-md">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fab fa-js text-yellow-500 ml-2"></i>
+                                JavaScript
+                            </h4>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                    <span>لغة برمجة تضيف التفاعل لصفحات الويب</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                    <span>تتعامل مع DOM وتستجيب لأحداث المستخدم</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                    <span>تتحقق من النماذج وتغير المحتوى ديناميكيًا</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                    <span>الأساس لتطبيقات ويب تفاعلية حديثة</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div
+                            class="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-2xl border border-indigo-200 shadow-md">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fab fa-bootstrap text-purple-500 ml-2"></i>
+                                Bootstrap
+                            </h4>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                    <span>إطار عمل CSS لتطوير واجهات سريع</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                    <span>يقدم نظام شبكة متجاوب ومكونات جاهزة</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                    <span>يوفر وقت التطوير ويضمن التوافق</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 ml-2"></i>
+                                    <span>أساس لبناء واجهات احترافية وجذابة</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-violet-100 to-indigo-100 p-6 rounded-2xl">
+                        <h4 class="text-xl font-bold text-gray-800 mb-4 text-center">القوة في الدمج</h4>
+                        <p class="text-lg text-gray-800 text-center mb-6">
+                            <span class="font-bold text-violet-700">JavaScript + Bootstrap</span> = مواقع ويب تفاعلية،
+                            متجاوبة، واحترافية في وقت قياسي
+                        </p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="bg-white p-4 rounded-xl text-center">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-bolt text-green-600"></i>
+                                </div>
+                                <p class="font-medium text-gray-800 text-sm">تطوير سريع</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl text-center">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-mobile-alt text-blue-600"></i>
+                                </div>
+                                <p class="font-medium text-gray-800 text-sm">متجاوب</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl text-center">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-users text-purple-600"></i>
+                                </div>
+                                <p class="font-medium text-gray-800 text-sm">تفاعلي</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl text-center">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-star text-yellow-600"></i>
+                                </div>
+                                <p class="font-medium text-gray-800 text-sm">احترافي</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div
+                        class="inline-flex items-center space-x-4 space-x-reverse bg-white px-6 py-4 rounded-full shadow-lg">
+                        <i class="fas fa-rocket text-violet-600 text-2xl"></i>
+                        <p class="text-lg text-gray-800 font-medium">الخطوة التالية: بناء مشاريع حقيقية وتعميق المعرفة
+                            في JavaScript المتقدمة</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشريحة 11: نشاط صفي -->
+
+
+        <!-- الشريحة 12: اختبار قصير -->
+        <section id="slide12" class="slide bg-gradient-to-br from-blue-50 to-cyan-50">
+            <div class="max-w-4xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-blue-700">11</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">اختبار قصير</h2>
+                </div>
+
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 mb-8">
+                    <div class="text-center mb-10">
+                        <div class="inline-block p-4 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-full mb-6">
+                            <i class="fas fa-question-circle text-4xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-6">أسئلة تقييمية سريعة</h3>
+                        <p class="text-lg text-gray-700">
+                            <i class="fas fa-clock ml-1"></i>
+                            زمن الاختبار: 5 دقائق
+                        </p>
+                    </div>
+
+                    <!-- السؤال 1 -->
+                    <div class="mb-10">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center ml-2 font-bold">
+                                1
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800">ما دور JavaScript في صفحات الويب؟</h4>
+                        </div>
+                        <div class="bg-blue-50 p-5 rounded-xl border border-blue-200">
+                            <div class="min-h-20"></div>
+                            <div class="mt-4 pt-4 border-t border-blue-200 hidden answer-section">
+                                <p class="text-gray-700 font-medium">الإجابة النموذجية:</p>
+                                <p class="text-gray-800 bg-white p-3 rounded-lg mt-2">JavaScript تضيف التفاعل الديناميكي
+                                    لصفحات الويب. تتحكم في سلوك الصفحة، تتعامل مع أحداث المستخدم، تغير المحتوى
+                                    ديناميكيًا، وتتحقق من النماذج.</p>
+                            </div>
+                            <button
+                                class="toggle-answer mt-4 text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center">
+                                <i class="fas fa-eye ml-1"></i>
+                                عرض الإجابة
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- السؤال 2 -->
+                    <div class="mb-10">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-cyan-600 text-white flex items-center justify-center ml-2 font-bold">
+                                2
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800">كيف تضيف Bootstrap إلى صفحة HTML؟</h4>
+                        </div>
+                        <div class="bg-cyan-50 p-5 rounded-xl border border-cyan-200">
+                            <div class="min-h-20"></div>
+                            <div class="mt-4 pt-4 border-t border-cyan-200 hidden answer-section">
+                                <p class="text-gray-700 font-medium">الإجابة النموذجية:</p>
+                                <p class="text-gray-800 bg-white p-3 rounded-lg mt-2">عن طريق إضافة روابط CDN في
+                                    head:<br>1. رابط CSS:
+                                    https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css<br>2. رابط
+                                    JS: https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js</p>
+                            </div>
+                            <button
+                                class="toggle-answer mt-4 text-cyan-600 hover:text-cyan-800 font-medium text-sm flex items-center">
+                                <i class="fas fa-eye ml-1"></i>
+                                عرض الإجابة
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- السؤال 3 -->
+                    <div class="mb-10">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center ml-2 font-bold">
+                                3
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800">اذكر فائدتين لدمج JavaScript مع Bootstrap.</h4>
+                        </div>
+                        <div class="bg-teal-50 p-5 rounded-xl border border-teal-200">
+                            <div class="min-h-20"></div>
+                            <div class="mt-4 pt-4 border-t border-teal-200 hidden answer-section">
+                                <p class="text-gray-700 font-medium">الإجابة النموذجية:</p>
+                                <p class="text-gray-800 bg-white p-3 rounded-lg mt-2">1. تطوير سريع: Bootstrap يوفر
+                                    واجهات جاهزة، JavaScript تضيف التفاعل.<br>2. تجربة مستخدم محسنة: واجهات متجاوبة
+                                    وجذابة مع تفاعل ديناميكي.<br>3. جودة واحترافية: مواقع تبدو احترافية وتعمل بكفاءة على
+                                    جميع الأجهزة.</p>
+                            </div>
+                            <button
+                                class="toggle-answer mt-4 text-teal-600 hover:text-teal-800 font-medium text-sm flex items-center">
+                                <i class="fas fa-eye ml-1"></i>
+                                عرض الإجابة
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-12">
+                        <button id="showAllAnswers"
+                            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full font-medium hover:shadow-lg transition-shadow">
+                            <i class="fas fa-list-check ml-2"></i>
+                            عرض جميع الإجابات
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div
+                        class="inline-flex items-center space-x-4 space-x-reverse bg-white px-6 py-4 rounded-full shadow-lg">
+                        <i class="fas fa-clipboard-check text-blue-600 text-2xl"></i>
+                        <p class="text-lg text-gray-800 font-medium">الاختبار للتقييم الذاتي والمراجعة</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشريحة 13: مصطلحات -->
+        <section id="slide13" class="slide bg-gradient-to-br from-gray-50 to-slate-100">
+            <div class="max-w-6xl mx-auto pt-12">
+                <div class="flex items-center mb-10">
+                    <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center ml-4">
+                        <span class="text-2xl font-bold text-gray-700">12</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">مصطلحات موجزة للمرجعية</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <!-- مصطلح 1 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-yellow-500 to-amber-500 p-6">
+                            <div class="flex items-center">
+                                <div class="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center ml-4">
+                                    <span class="text-white text-2xl font-bold">JS</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">JavaScript</h3>
+                                    <p class="text-white/90">لغة برمجة للويب</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-700">
+                                لغة برمجة عالية المستوى تُنفّذ في متصفح الويب. تضيف التفاعل الديناميكي لصفحات HTML
+                                الثابتة. يمكن استخدامها أيضاً في جانب الخادم (Node.js).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- مصطلح 2 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-purple-500 to-indigo-500 p-6">
+                            <div class="flex items-center">
+                                <div class="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center ml-4">
+                                    <span class="text-white text-2xl font-bold">BS</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">Bootstrap</h3>
+                                    <p class="text-white/90">إطار عمل CSS</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-700">
+                                إطار عمل CSS مفتوح المصدر يحتوي على قوالب تصميم جاهزة لأنماط الطباعة والنماذج والأزرار
+                                والجداول والتنقل والمكونات الأخرى.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- مصطلح 3 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-blue-500 to-cyan-500 p-6">
+                            <div class="flex items-center">
+                                <div class="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center ml-4">
+                                    <i class="fas fa-sitemap text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">DOM</h3>
+                                    <p class="text-white/90">نموذج كائن المستند</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-700">
+                                تمثيل برمجي لهيكل صفحة HTML. تسمح JavaScript بالوصول إلى عناصر DOM وتعديلها ديناميكيًا.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- مصطلح 4 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-green-500 to-teal-500 p-6">
+                            <div class="flex items-center">
+                                <div class="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center ml-4">
+                                    <i class="fas fa-mouse-pointer text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">الأحداث</h3>
+                                    <p class="text-white/90">Events</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-700">
+                                أفعال أو وقائع تحدث في المتصفح (نقر، تحميل صفحة، إدخال نص). يمكن لـ JavaScript الاستماع
+                                لهذه الأحداث والاستجابة لها.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- مصطلح 5 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-red-500 to-pink-500 p-6">
+                            <div class="flex items-center">
+                                <div class="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center ml-4">
+                                    <i class="fas fa-th text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">نظام الشبكة</h3>
+                                    <p class="text-white/90">Grid System</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-700">
+                                نظام في Bootstrap يقسم الصفحة إلى 12 عمودًا. يسمح بإنشاء تخطيطات متجاوبة تتكيف مع أحجام
+                                الشاشات المختلفة.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- مصطلح 6 -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-orange-500 to-amber-500 p-6">
+                            <div class="flex items-center">
+                                <div class="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center ml-4">
+                                    <i class="fas fa-window-restore text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">المودال</h3>
+                                    <p class="text-white/90">Modal</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-700">
+                                نافذة منبثقة تظهر فوق المحتوى الرئيسي. تستخدم لعرض محتوى إضافي دون الانتقال إلى صفحة
+                                جديدة. مكون جاهز في Bootstrap.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div
+                        class="inline-flex items-center space-x-4 space-x-reverse bg-white px-6 py-4 rounded-full shadow-lg">
+                        <i class="fas fa-book text-gray-600 text-2xl"></i>
+                        <p class="text-lg text-gray-800 font-medium">احفظ هذه المصطلحات كمرجع سريع أثناء التطوير</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <footer class="bg-gray-900 text-white py-12 mt-12 print:text-black print:bg-white print:border-t relative z-10">
+        <div class="container mx-auto px-4 text-center">
+            <h4 class="text-xl font-bold mb-4">المهندس رمزي البازل</h4>
+            <div class="flex justify-center gap-6 mb-6 print:hidden">
+                <a href="mailto:ramzyalbazel700@gmail.com"
+                    class="bg-white/10 p-3 rounded-full hover:bg-blue-600 transition-colors"><i
+                        class="fas fa-envelope text-xl"></i></a>
+                <a href="https://t.me/web_note_bot"
+                    class="bg-white/10 p-3 rounded-full hover:bg-blue-500 transition-colors"><i
+                        class="fab fa-telegram text-xl"></i></a>
+            </div>
+            <p class="text-gray-400 text-sm">© 2026 جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <script>
+        // Config Tailwind
+        tailwind.config = {
+            darkMode: 'class',
+        }
+
+        // Dark Mode Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const html = document.documentElement;
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            html.classList.remove('dark');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.theme = 'light';
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // عناصر التحكم
+        const slidesContainer = document.getElementById('slidesContainer');
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const slideMenu = document.getElementById('slideMenu');
+        const slideMenuItems = document.querySelectorAll('.slide-menu-item');
+        const progressFill = document.getElementById('progressFill');
+        const currentSlideElement = document.getElementById('currentSlide');
+        const toggleAnswerButtons = document.querySelectorAll('.toggle-answer');
+        const showAllAnswersBtn = document.getElementById('showAllAnswers');
+
+        let currentSlideIndex = 0;
+        const totalSlides = slides.length;
+
+        // تحديث شريط التقدم
+        function updateProgress() {
+            const progress = ((currentSlideIndex + 1) / totalSlides) * 100;
+            progressFill.style.width = `${progress}%`;
+            currentSlideElement.textContent = currentSlideIndex + 1;
+        }
+
+        // عرض شريحة محددة
+        function showSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+
+            slides[index].classList.add('active');
+            currentSlideIndex = index;
+
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === totalSlides - 1;
+
+            updateProgress();
+            window.scrollTo(0, 0);
+            slideMenu.classList.add('hidden');
+        }
+
+        // الشريحة التالية
+        function nextSlide() {
+            showSlide(currentSlideIndex + 1);
+        }
+
+        // الشريحة السابقة
+        function prevSlide() {
+            showSlide(currentSlideIndex - 1);
+        }
+
+        // إظهار/إخفاء إجابة واحدة
+        function toggleAnswer(event) {
+            const button = event.target.closest('.toggle-answer');
+            const answerSection = button.parentElement.querySelector('.answer-section');
+
+            if (answerSection.classList.contains('hidden')) {
+                answerSection.classList.remove('hidden');
+                button.innerHTML = '<i class="fas fa-eye-slash ml-1"></i> إخفاء الإجابة';
+            } else {
+                answerSection.classList.add('hidden');
+                button.innerHTML = '<i class="fas fa-eye ml-1"></i> عرض الإجابة';
+            }
+        }
+
+        // إظهار جميع الإجابات
+        function showAllAnswers() {
+            const answerSections = document.querySelectorAll('.answer-section');
+            const toggleButtons = document.querySelectorAll('.toggle-answer');
+
+            answerSections.forEach(section => {
+                section.classList.remove('hidden');
+            });
+
+            toggleButtons.forEach(button => {
+                button.innerHTML = '<i class="fas fa-eye-slash ml-1"></i> إخفاء الإجابة';
+            });
+
+            showAllAnswersBtn.innerHTML = '<i class="fas fa-eye-slash ml-2"></i> إخفاء جميع الإجابات';
+            showAllAnswersBtn.onclick = hideAllAnswers;
+        }
+
+        // إخفاء جميع الإجابات
+        function hideAllAnswers() {
+            const answerSections = document.querySelectorAll('.answer-section');
+            const toggleButtons = document.querySelectorAll('.toggle-answer');
+
+            answerSections.forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            toggleButtons.forEach(button => {
+                button.innerHTML = '<i class="fas fa-eye ml-1"></i> عرض الإجابة';
+            });
+
+            showAllAnswersBtn.innerHTML = '<i class="fas fa-list-check ml-2"></i> عرض جميع الإجابات';
+            showAllAnswersBtn.onclick = showAllAnswers;
+        }
+
+        // التعامل مع مفاتيح لوحة المفاتيح
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight' || event.key === 'PageUp') {
+                prevSlide();
+            } else if (event.key === 'ArrowLeft' || event.key === 'PageDown' || event.key === ' ') {
+                nextSlide();
+            }
+        });
+
+        // تهيئة الأحداث
+        function init() {
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+
+            menuBtn.addEventListener('click', () => {
+                slideMenu.classList.remove('hidden');
+            });
+
+            closeMenuBtn.addEventListener('click', () => {
+                slideMenu.classList.add('hidden');
+            });
+
+            slideMenuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const slideIndex = parseInt(item.dataset.slide) - 1;
+                    showSlide(slideIndex);
+                });
+            });
+
+            toggleAnswerButtons.forEach(button => {
+                button.addEventListener('click', toggleAnswer);
+            });
+
+            showAllAnswersBtn.addEventListener('click', showAllAnswers);
+
+            slideMenu.addEventListener('click', (event) => {
+                if (event.target === slideMenu) {
+                    slideMenu.classList.add('hidden');
+                }
+            });
+
+            showSlide(0);
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW failed:', err));
+            });
+        }
+        // تهيئة الصفحة عند التحميل
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

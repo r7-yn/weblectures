@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلة تصميم الويب: من البدايات إلى الأطر الحديثة</title>
+    <!-- إضافة Tailwind CSS عبر CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- إضافة خطوط عربية -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .timeline-item {
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .tool-card {
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: scale(1.05);
+        }
+
+        .era-section {
+            scroll-margin-top: 100px;
+        }
+    </style>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <link rel="apple-touch-icon" href="logo.jpg">
+</head>
+
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <!-- شريط التنقل -->
+    <nav
+        class="bg-blue-900 dark:bg-gray-800 text-white sticky top-0 z-50 shadow-lg print:hidden transition-colors duration-300">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="hover:text-blue-300 transition-colors">
+                        <i class="fas fa-arrow-right"></i> الرئيسية
+                    </a>
+                    <h1 class="text-xl font-bold">رحلة تصميم الويب</h1>
+                </div>
+                <div class="hidden md:flex space-x-6 space-x-reverse items-center">
+                    <a href="#history" class="hover:text-blue-300 transition-colors">التاريخ</a>
+                    <a href="#present" class="hover:text-blue-300 transition-colors">الحاضر</a>
+                    <a href="#tools" class="hover:text-blue-300 transition-colors">الأدوات</a>
+                    <a href="#conclusion" class="hover:text-blue-300 transition-colors">الخلاصة</a>
+                    <button onclick="window.print()"
+                        class="bg-white text-blue-900 px-3 py-1 rounded hover:bg-blue-100 transition-colors font-bold text-sm">
+                        <i class="fas fa-file-pdf me-1"></i> PDF
+                    </button>
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-white/10 transition-colors focus:outline-none">
+                        <i class="fas fa-moon text-white text-lg"></i>
+                    </button>
+                </div>
+                <button class="md:hidden text-xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- رأس الصفحة -->
+    <header
+        class="bg-gradient-to-r from-blue-800 to-indigo-900 dark:from-gray-800 dark:to-gray-900 text-white py-20 print:py-10">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">رحلة تصميم الويب</h1>
+            <p class="text-xl md:text-2xl mb-8">من البدايات المتواضعة إلى الأطر الحديثة</p>
+            <div class="max-w-3xl mx-auto bg-blue-700 bg-opacity-30 dark:bg-gray-700 dark:bg-opacity-30 p-6 rounded-lg">
+                <p class="text-lg">
+                    يعد تصميم الويب من أكثر المجالات التقنية تطورًا وتأثيرًا في الحياة الرقمية الحديثة.
+                    من صفحات بسيطة تحتوي على نصوص وروابط محدودة، إلى مواقع وتطبيقات ويب تفاعلية غنية بالتجربة البصرية
+                    والمحتوى الذكي.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- الشريط الزمني -->
+    <section id="history" class="py-16 bg-white dark:bg-gray-900 era-section transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-800 dark:text-blue-400">السلسلة التاريخية والتطور
+            </h2>
+
+            <!-- الخط الزمني -->
+            <div class="relative">
+                <!-- الخط المركزي -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-blue-500"></div>
+
+                <!-- العناصر الزمنية -->
+                <div class="space-y-12">
+                    <!-- 1991 -->
+                    <div class="timeline-item flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-8 mb-6 md:mb-0">
+                            <div
+                                class="bg-blue-100 dark:bg-gray-800 p-6 rounded-lg shadow-md border-r-4 border-blue-500 text-gray-800 dark:text-gray-200">
+                                <div class="flex items-center mb-4">
+                                    <span
+                                        class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold">1991</span>
+                                    <h3 class="text-xl font-bold mr-4">بدايات HTML</h3>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300">
+                                    أول موقع إلكتروني أنشأه تيم برنرز لي في CERN. صفحات بسيطة تحتوي على نصوص وروابط فقط،
+                                    دون أي تنسيق بصري.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8">
+                            <div class="md:w-1/2 md:pr-8">
+                                <div class="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg text-center">
+                                    <div class="bg-yellow-200 p-3 rounded inline-block">
+                                        <img src="1.jpeg" alt="اول موقع" class="rounded shadow">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- منتصف التسعينيات -->
+                    <div class="timeline-item flex flex-col md:flex-row-reverse items-center">
+                        <div class="md:w-1/2 md:pl-8 mb-6 md:mb-0">
+                            <div
+                                class="bg-green-100 dark:bg-gray-800 p-6 rounded-lg shadow-md border-r-4 border-green-500 text-gray-800 dark:text-gray-200">
+                                <div class="flex items-center mb-4">
+                                    <span class="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-bold">منتصف
+                                        التسعينيات</span>
+                                    <h3 class="text-xl font-bold mr-4">عصر الجداول</h3>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300">
+                                    استخدام الجداول (HTML Tables) لتنظيم المحتوى وإنشاء تخطيطات أكثر تعقيدًا، رغم صعوبة
+                                    صيانتها.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pr-8">
+                            <div class="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg text-center">
+                                <div class="bg-yellow-200 p-3 rounded inline-block">
+                                    <img src="https://via.placeholder.com/300x200?text=GeoCities+Site"
+                                        alt="موقع من عصر الجداول" class="rounded shadow">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- نهاية التسعينيات -->
+                    <div class="timeline-item flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-8 mb-6 md:mb-0">
+                            <div
+                                class="bg-purple-100 dark:bg-gray-800 p-6 rounded-lg shadow-md border-r-4 border-purple-500 text-gray-800 dark:text-gray-200">
+                                <div class="flex items-center mb-4">
+                                    <span
+                                        class="bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-bold">نهاية
+                                        التسعينيات</span>
+                                    <h3 class="text-xl font-bold mr-4">صعود Flash</h3>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300">
+                                    ظهور Adobe Flash الذي أحدث ثورة في تصميم الويب التفاعلي مع الرسوم المتحركة والصوت
+                                    والفيديو.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8">
+                            <div class="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg text-center">
+                                <div class="bg-black p-3 rounded inline-block">
+                                    <img src="https://via.placeholder.com/300x150/000000/FFFFFF?text=Flash+Site"
+                                        alt="موقع Flash" class="rounded">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2004-2010 -->
+                    <div class="timeline-item flex flex-col md:flex-row-reverse items-center">
+                        <div class="md:w-1/2 md:pl-8 mb-6 md:mb-0">
+                            <div
+                                class="bg-red-100 dark:bg-gray-800 p-6 rounded-lg shadow-md border-r-4 border-red-500 text-gray-800 dark:text-gray-200">
+                                <div class="flex items-center mb-4">
+                                    <span
+                                        class="bg-red-600 text-white px-4 py-1 rounded-full text-sm font-bold">2004-2010</span>
+                                    <h3 class="text-xl font-bold mr-4">عصر Web 2.0</h3>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300">
+                                    تحول المواقع إلى منصات تفاعلية اجتماعية مع ظهور Facebook وYouTube واهتمام متزايد
+                                    بتجربة المستخدم.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pr-8">
+                            <div class="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg text-center">
+                                <div class="bg-blue-100 p-3 rounded inline-block">
+                                    <img src="2.jpeg" alt="Facebook قديم" class="rounded shadow">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2010 -->
+                    <div class="timeline-item flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-8 mb-6 md:mb-0">
+                            <div
+                                class="bg-indigo-100 dark:bg-gray-800 p-6 rounded-lg shadow-md border-r-4 border-indigo-500 text-gray-800 dark:text-gray-200">
+                                <div class="flex items-center mb-4">
+                                    <span
+                                        class="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold">2010</span>
+                                    <h3 class="text-xl font-bold mr-4">التصميم المتجاوب</h3>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300">
+                                    ظهور مفهوم التصميم المتجاوب (Responsive Web Design) مع Ethan Marcotte لمواكبة تعدد
+                                    أحجام الشاشات.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-8">
+                            <div class="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg text-center">
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div class="bg-gray-300 dark:bg-gray-600 p-2 rounded text-xs">هاتف</div>
+                                    <div class="bg-gray-400 dark:bg-gray-500 p-2 rounded text-xs">لوحي</div>
+                                    <div class="bg-gray-500 dark:bg-gray-400 p-2 rounded text-xs">حاسوب</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الحاضر -->
+    <section id="present" class="py-16 bg-gray-100 dark:bg-gray-800 era-section transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-800 dark:text-blue-400">الحالة الحديثة لتصميم
+                الويب</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Mobile First -->
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md text-gray-800 dark:text-gray-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-500 text-white p-3 rounded-full mr-4">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">التصميم الموجه للهواتف أولاً</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        يتم بناء التصميم أساسًا ليتناسب مع شاشة الهاتف، ثم توسيعه تدريجيًا لأجهزة أكبر، حيث يتصفح معظم
+                        المستخدمين الإنترنت عبر الهواتف الذكية.
+                    </p>
+                </div>
+
+                <!-- Accessibility -->
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md text-gray-800 dark:text-gray-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-500 text-white p-3 rounded-full mr-4">
+                            <i class="fas fa-universal-access"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">إمكانية الوصول (Accessibility)</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        تصميم يراعي جميع المستخدمين، بما في ذلك ذوي الإعاقة البصرية أو السمعية، عبر تقنيات مثل النصوص
+                        البديلة للصور وتباين الألوان الواضح ودعم قارئات الشاشة.
+                    </p>
+                </div>
+
+                <!-- Performance -->
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md text-gray-800 dark:text-gray-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-500 text-white p-3 rounded-full mr-4">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">تحسين الأداء</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        سرعة تحميل الصفحة تؤثر على تجربة المستخدم وترتيب الموقع في محركات البحث. يتم التركيز على ضغط
+                        الصوت وتقليل ملفات JavaScript وCSS واستخدام شبكات توزيع المحتوى.
+                    </p>
+                </div>
+
+                <!-- UI/UX -->
+                <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md text-gray-800 dark:text-gray-200">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-500 text-white p-3 rounded-full mr-4">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">مبادئ واجهة وتجربة المستخدم</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        الوضوح البصري، تسلسل العناصر بحسب الأهمية، تقليل الإرباك البصري، ألوان متناسقة وتفاعل طبيعي.
+                    </p>
+                </div>
+            </div>
+
+            <!-- التقنيات الحديثة -->
+            <div class="mt-12 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-800 p-8 rounded-lg">
+                <h3 class="text-2xl font-bold mb-6 text-center text-blue-800 dark:text-blue-300">التقنيات الحديثة في
+                    بناء واجهات الويب</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div
+                        class="bg-white dark:bg-gray-700 p-5 rounded-lg shadow text-center text-gray-800 dark:text-gray-200">
+                        <div
+                            class="bg-blue-100 dark:bg-blue-800 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-blue-600 dark:text-blue-300 font-bold text-xl">R</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">React.js</h4>
+                        <p class="text-gray-700 dark:text-gray-400 text-sm">مكتبة من Facebook لبناء واجهات المستخدم
+                            المعقدة والقابلة لإعادة الاستخدام</p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-gray-700 p-5 rounded-lg shadow text-center text-gray-800 dark:text-gray-200">
+                        <div
+                            class="bg-green-100 dark:bg-green-800 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-green-600 dark:text-green-300 font-bold text-xl">V</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">Vue.js</h4>
+                        <p class="text-gray-700 dark:text-gray-400 text-sm">إطار عمل تقدمي لبناء واجهات المستخدم، سهل
+                            التعلم والاستخدام</p>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-gray-700 p-5 rounded-lg shadow text-center text-gray-800 dark:text-gray-200">
+                        <div
+                            class="bg-red-100 dark:bg-red-800 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-red-600 dark:text-red-300 font-bold text-xl">A</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">Angular</h4>
+                        <p class="text-gray-700 dark:text-gray-400 text-sm">إطار عمل من Google لبناء تطبيقات الويب
+                            الديناميكية المعقدة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الأدوات -->
+    <section id="tools" class="py-16 bg-white dark:bg-gray-900 era-section transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-800 dark:text-blue-400">الأدوات والأطر والبرمجيات
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Bootstrap -->
+                <div
+                    class="tool-card bg-purple-50 dark:bg-gray-800 p-6 rounded-lg shadow-md border border-purple-200 dark:border-gray-700 text-center text-gray-800 dark:text-gray-200">
+                    <div
+                        class="bg-purple-500 text-white p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <span class="font-bold">B</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Bootstrap</h3>
+                    <p class="text-gray-700 dark:text-gray-400 mb-4">إطار عمل CSS كلاسيكي يوفر مكونات جاهزة وتصميم
+                        متجاوب</p>
+                    <a href="https://getbootstrap.com"
+                        class="inline-block bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors">الموقع
+                        الرسمي</a>
+                </div>
+
+                <!-- Tailwind CSS -->
+                <div
+                    class="tool-card bg-cyan-50 dark:bg-gray-800 p-6 rounded-lg shadow-md border border-cyan-200 dark:border-gray-700 text-center text-gray-800 dark:text-gray-200">
+                    <div
+                        class="bg-cyan-500 text-white p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <span class="font-bold">T</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Tailwind CSS</h3>
+                    <p class="text-gray-700 dark:text-gray-400 mb-4">إطار CSS يعتمد على فئة Utility-First يوفر مرونة
+                        كبيرة</p>
+                    <a href="https://tailwindcss.com"
+                        class="inline-block bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 transition-colors">الموقع
+                        الرسمي</a>
+                </div>
+
+                <!-- Webflow -->
+                <div
+                    class="tool-card bg-blue-50 dark:bg-gray-800 p-6 rounded-lg shadow-md border border-blue-200 dark:border-gray-700 text-center text-gray-800 dark:text-gray-200">
+                    <div
+                        class="bg-blue-500 text-white p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <span class="font-bold">W</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Webflow</h3>
+                    <p class="text-gray-700 dark:text-gray-400 mb-4">أداة تصميم مرئي تتيح إنشاء مواقع ويب احترافية دون
+                        كتابة كود</p>
+                    <a href="https://webflow.com"
+                        class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">الموقع
+                        الرسمي</a>
+                </div>
+
+                <!-- Figma -->
+                <div
+                    class="tool-card bg-pink-50 dark:bg-gray-800 p-6 rounded-lg shadow-md border border-pink-200 dark:border-gray-700 text-center text-gray-800 dark:text-gray-200">
+                    <div
+                        class="bg-pink-500 text-white p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <span class="font-bold">F</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Figma</h3>
+                    <p class="text-gray-700 dark:text-gray-400 mb-4">أداة تصميم وتعاون سحابي لإنشاء واجهات المستخدم
+                        والنماذج الأولية</p>
+                    <a href="https://figma.com"
+                        class="inline-block bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 transition-colors">الموقع
+                        الرسمي</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الخلاصة -->
+    <section id="conclusion"
+        class="py-16 bg-gradient-to-r from-blue-900 to-indigo-800 text-white era-section print:hidden">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-8">الخلاصة</h2>
+
+            <div class="max-w-3xl mx-auto bg-blue-800 bg-opacity-30 p-8 rounded-lg">
+                <p class="text-xl mb-6">
+                    رحلة تصميم الويب هي قصة تطور الإنسان مع التقنية — من صفحات نصية بسيطة إلى بيئات رقمية متكاملة تعتمد
+                    على الذكاء الاصطناعي والتفاعل اللحظي.
+                </p>
+                <p class="text-xl mb-6">
+                    لم يعد تصميم الويب مجرد بناء صفحات، بل <span class="font-bold text-yellow-300">فنّ يجمع بين الجمال،
+                        والوظيفة، والتجربة الإنسانية</span>.
+                </p>
+                <p class="text-xl">
+                    ومع استمرار التطور في الأطر والأدوات، سيبقى تصميم الويب في طليعة الإبداع الرقمي، يربط بين المستخدم
+                    والتكنولوجيا بلغة الجمال والكفاءة.
+                </p>
+            </div>
+
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white bg-opacity-10 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">الماضي</h3>
+                    <p>HTML، الجداول، Flash</p>
+                </div>
+                <div class="bg-white bg-opacity-10 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">الحاضر</h3>
+                    <p>React، Vue، Angular، التصميم المتجاوب</p>
+                </div>
+                <div class="bg-white bg-opacity-10 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">المستقبل</h3>
+                    <p>الذكاء الاصطناعي، الواقع المعزز، تجارب أكثر غنى</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer class="bg-gray-900 text-white py-8 print:text-black print:bg-white print:border-t">
+        <div class="container mx-auto px-4 text-center">
+            <h4 class="text-xl font-bold mb-2">المهندس رمزي البازل</h4>
+            <p class="mb-4 text-gray-400 print:text-gray-600">rahla tasmem alweb: min albidaiat almutawadea ila alatar
+                alhaditha</p>
+            <div class="flex justify-center gap-6 mb-4 print:hidden">
+                <a href="mailto:ramzyalbazel700@gmail.com" class="hover:text-blue-400"><i
+                        class="fas fa-envelope"></i></a>
+                <a href="https://t.me/web_note_bot" class="hover:text-blue-400"><i class="fab fa-telegram"></i></a>
+            </div>
+            <p class="text-gray-500 text-sm">© 2026 جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- إضافة Font Awesome للرموز -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- إضافة بعض التفاعلية البسيطة -->
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW failed:', err));
+            });
+        }
+        // إضافة تأثير التمرير السلس للروابط الداخلية
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // إضافة تأثيرات للبطاقات عند التمرير
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // تطبيق التأثير على البطاقات
+        document.querySelectorAll('.timeline-item, .tool-card').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+
+        // Config Tailwind
+        tailwind.config = {
+            darkMode: 'class',
+        }
+
+        // Dark Mode Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const html = document.documentElement;
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            html.classList.remove('dark');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.theme = 'light';
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+    </script>
+</body>
+
+</html>
